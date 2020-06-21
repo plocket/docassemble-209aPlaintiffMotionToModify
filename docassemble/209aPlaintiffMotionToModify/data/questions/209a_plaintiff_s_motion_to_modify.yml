@@ -107,6 +107,7 @@ code: |
   a_plaintiff_s_motion_to_modify_download
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
 ---
+id: motion to modify intro
 continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_intro
 question: |
   Plaintiff Motion to Modify or Terminate an Abuse Prevention Order
@@ -125,6 +126,7 @@ fields:
   - I am the plaintiff and I want to continue: a_plaintiff_s_motion_to_modify_qc_v20009_intro
     datatype: yesnowide
 ---
+id: type of request
 question: |
   What are you asking the Court to do?
 subquestion: |
@@ -136,9 +138,18 @@ fields:
       - modify this Abuse Prevention Order: modify
       - terminate this Abuse Prevention Order: terminate
 ---
+code: |
+  if MJFmodify_terminate == 'modify':
+    terminate_order = False
+    modify_order = True
+  else:
+    terminate_order = True
+    modify_order = False
+---
 # TODO: If they answer 'I do not understand', can they continue?
 # Display the new abuse order understanding as a question with a single
 # checkbox
+id: explanation of future orders
 question: |
   Please confirm that you understand this statement
 subquestion: |
@@ -155,18 +166,11 @@ fields:
       - I understand: True
       - I do not understand: False
 ---
-code: |
-  if MJFmodify_terminate == 'modify':
-    terminate_order = False
-    modify_order = True
-  else:
-    terminate_order = True
-    modify_order = False
----
 # TODO: How do we handle things like the below mako with translations?
 # Option: Hard code the intended sentences.
 # Option: Make a templates that a variable is assigned to conditionally.
 # I suspect the first will useful in most places.
+id: reason for request
 question: |
   Reasons supporting your request to ${ MJFmodify_terminate } your restraining order
 subquestion: |
@@ -176,6 +180,7 @@ fields:
   - no label: users[0].statement
     input type: area
 ---
+id: motion to modify preview
 continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_preview_question
 question: |
   Preview your form
@@ -186,6 +191,7 @@ subquestion: |
   
    ${a_plaintiff_s_motion_to_modify_qc_v20009_attachment_preview}
 ---
+id: motion to modify attachment preview
 attachment:
     variable name: a_plaintiff_s_motion_to_modify_qc_v20009_attachment_preview
     name: Plaintiff Motion to Modify  - 209a
@@ -203,6 +209,7 @@ attachment:
       - "plaintiff_statement": ${ plaintiffs[0].statement }
       - "understand_yes": ${ understand_yes }
 ---
+id: motion to modify download
 event: a_plaintiff_s_motion_to_modify_download
 progress: 100
 question: |
