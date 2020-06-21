@@ -79,6 +79,7 @@ comment: |
   - Same question for other parties (defendants) - multiples allowed?
 ---
 id: interview_order_a_plaintiff_s_motion_to_modify_qc_v20009
+mandatory: True
 code: |
   # This is a placeholder to control logic flow in this interview
   # It was generated from interview_generator.py as an 'interview order' type question.
@@ -103,6 +104,7 @@ code: |
   a_plaintiff_s_motion_to_modify_qc_v20009_preview_question # Pre-canned preview screen
   basic_questions_signature_flow
   plaintiffs[0].signature
+  a_plaintiff_s_motion_to_modify_download
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
 ---
 comment: |
@@ -161,6 +163,10 @@ code: |
     terminate_order = True
     modify_order = False
 ---
+# TODO: How do we handle things like the below mako with translations?
+# Option: Hard code the intended sentences.
+# Option: Make a templates that a variable is assigned to conditionally.
+# I suspect the first will useful in most places.
 question: |
   Reasons supporting your request to ${ MJFmodify_terminate } your restraining order
 subquestion: |
@@ -197,8 +203,8 @@ attachment:
       - "plaintiff_statement": ${ plaintiffs[0].statement }
       - "understand_yes": ${ understand_yes }
 ---
+event: a_plaintiff_s_motion_to_modify_download
 progress: 100
-mandatory: True
 question: |
   Completed Form
 subquestion: |
@@ -216,7 +222,7 @@ subquestion: |
   ${a_plaintiff_s_motion_to_modify_qc_v20009_attachment }
 attachment code: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
 ---
-need: a_plaintiff_s_motion_to_modify_qc_v20009
+id: motion to modify attachment
 attachment:
     variable name: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
     name: Plaintiff\'s Motion to Modify or Terminate Abuse Prevention Order - 209a
