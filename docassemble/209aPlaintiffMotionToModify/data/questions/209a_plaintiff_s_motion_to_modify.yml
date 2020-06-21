@@ -90,20 +90,20 @@ code: |
   allowed_courts = interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"]["allowed courts"]
   # Only a plaintiff can fill in this form so we'll hard-code it here
   user_ask_role = 'plaintiff'
-  str(plaintiffs[0])
-  str(defendants[0])
+  str(users[0])
+  str(other_parties[0])
   courts[0].division
   modify_order
-  plaintiffs[0].statement
+  users[0].statement
   understand_yes
-  str(plaintiffs[0])
+  str(users[0])
   signature_date
   # By default, we'll mark any un-filled fields as DAEmpty(). This helps avoid errors if you intentionally hide a logic branch or mark a question not required
   # Comment out the line below if you don't want this behavior. 
   mark_unfilled_fields_empty(interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"])
   a_plaintiff_s_motion_to_modify_qc_v20009_preview_question # Pre-canned preview screen
   basic_questions_signature_flow
-  plaintiffs[0].signature
+  users[0].signature
   a_plaintiff_s_motion_to_modify_download
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
 ---
@@ -199,14 +199,14 @@ attachment:
     pdf template file: 209A_plaintiff_s_motion_to_modify.pdf
     editable: False
     fields: 
-      - "plaintiff_name": ${ plaintiffs }
-      - "defendant_name": ${ defendants }
-      - "plaintiff_name__1": ${ plaintiffs }
+      - "plaintiff_name": ${ users }
+      - "defendant_name": ${ other_parties }
+      - "plaintiff_name__1": ${ users }
       - "signature_date": ${ signature_date }
       - "court_division": ${ courts[0] }
       - "modify_order": ${ modify_order }
       - "terminate_order": ${ terminate_order }
-      - "plaintiff_statement": ${ plaintiffs[0].statement }
+      - "plaintiff_statement": ${ users[0].statement }
       - "understand_yes": ${ understand_yes }
 ---
 id: motion to modify download
@@ -237,13 +237,13 @@ attachment:
     pdf template file: 209A_plaintiff_s_motion_to_modify.pdf
     editable: False    
     fields: 
-      - "plaintiff_name": ${ plaintiffs }
-      - "defendant_name": ${ defendants }
-      - "plaintiff_name__1": ${ plaintiffs }
+      - "plaintiff_name": ${ users }
+      - "defendant_name": ${ other_parties }
+      - "plaintiff_name__1": ${ users }
       - "signature_date": ${ signature_date }
       - "court_division": ${ courts[0] }
       - "modify_order": ${ modify_order }
       - "terminate_order": ${ terminate_order }
-      - "plaintiff_statement": ${ plaintiffs[0].statement }
+      - "plaintiff_statement": ${ users[0].statement }
       - "understand_yes": ${ understand_yes }
-      - "plaintiff_signature": ${ plaintiffs[0].signature }
+      - "plaintiff_signature": ${ users[0].signature }
