@@ -107,10 +107,7 @@ code: |
   a_plaintiff_s_motion_to_modify_download
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
 ---
-comment: |
-  This question is used to introduce your interview. Please customize
 continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_intro
-continue button label: I am the plaintiff and I wish to continue
 question: |
   Plaintiff Motion to Modify or Terminate an Abuse Prevention Order
 subquestion: |
@@ -123,7 +120,10 @@ subquestion: |
   1. you wish to either modify your existing order, or to terminate your order.
 
   If you are not the plaintiff or if you are the subject of an Abuse Prevention Order, then
-  **do not run this tool**.  Instead, you should **instructions to go here**.
+  **do not run this tool**.  Instead, you should **TODO: INSTRUCTIONS TO GO HERE**.
+fields:
+  - I am the plaintiff and I want to continue: a_plaintiff_s_motion_to_modify_qc_v20009_intro
+    datatype: yesnowide
 ---
 question: |
   What are you asking the Court to do?
