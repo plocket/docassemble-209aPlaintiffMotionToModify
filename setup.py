@@ -45,7 +45,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
 setup(name='docassemble.209aPlaintiffMotionToModify',
       version='0.0.1',
       description=("A docassemble extension for MA plaintiff's motion to modify using the docassemblyline process."),
-      long_description="# docassemble.209aPlaintiffMotionToModify\n\nA docassemble extension for MA plaintiff's motion to modify using the docassemblyline process.\n\n## Author\n\nmb.restless.tech@gmail.com\n\n",
+      long_description="# docassemble.209aPlaintiffMotionToModify\r\n\r\nA docassemble extension for MA plaintiff's motion to modify using the docassemblyline process.\r\n\r\n\r\n",
       long_description_content_type='text/markdown',
       author='',
       author_email='52798256+plocket@users.noreply.github.com',
