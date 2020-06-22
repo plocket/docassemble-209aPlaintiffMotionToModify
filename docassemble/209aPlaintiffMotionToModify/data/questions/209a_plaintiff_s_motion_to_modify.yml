@@ -97,11 +97,22 @@ code: |
   courts[0].division
   signature_date
   a_plaintiff_s_motion_to_modify_qc_v20009_preview_question # Pre-canned preview screen
+  
   basic_questions_signature_flow
   users[0].signature
   a_plaintiff_s_motion_to_modify_download
   download_titles = [ "209a Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order" ]
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
+---
+id: form to sign
+# For consistency between interviews and to allow access from outside
+code: |
+  form_to_sign = pdf_concatenate( a_plaintiff_s_motion_to_modify_qc_v20009_attachment_preview, filename='Plaintiff Motion to Modify or Terminate an Abuse Prevention Order (Preview).pdf' )
+---
+id: signed form without cover page
+# For consistency between interviews and to allow access from outside
+code: |
+  form_to_file_no_cover = pdf_concatenate( a_plaintiff_s_motion_to_modify_qc_v20009_attachment, filename='Plaintiff Motion to Modify or Terminate an Abuse Prevention Order.pdf' )
 ---
 id: motion to modify intro
 # TODO: Should this be a required checkbox, or is the information
