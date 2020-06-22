@@ -69,15 +69,6 @@ code: |
       ],
   })
 ---
-comment: |
-  Notes on this code:
-  - It doesn't override any basic questions
-  
-  TODO:
-  - Can multiple plaintifs be on one form for this form? (Currently,
-    that is offered as a possibility)
-  - Same question for other parties (defendants) - multiples allowed?
----
 id: interview_order_a_plaintiff_s_motion_to_modify_qc_v20009
 mandatory: True
 code: |
@@ -94,13 +85,16 @@ code: |
   user_ask_role = 'plaintiff'
   str(users[0])
   str(other_parties[0])
-  courts[0].division
   modify_order
   users[0].statement
   understand_yes
   str(users[0])
   
   # Standard code
+  users[0].address.address
+  users[0].mobile_number
+  # Can this form be sent to the court?
+  courts[0].division
   signature_date
   a_plaintiff_s_motion_to_modify_qc_v20009_preview_question # Pre-canned preview screen
   basic_questions_signature_flow
@@ -110,17 +104,19 @@ code: |
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
 ---
 id: motion to modify intro
+# TODO: Should this be a required checkbox, or is the information
+# here less crucial than that?
 continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_intro
 question: |
   Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order
 subquestion: |
-  This tool helps you to generate a *Plaintiff's Motion to Modify or Terminate Abuse
+  This tool helps you to generate a *Plaintiff's Motion to Modify or Terminate an Abuse
   Prevention Order* (pursuant to G.L. c. 209A).
 
   You should only run this tool if you are the **Plaintiff**,  that is:
   
   1. you personally have previously applied for an Abuse Prevention Order; **and**
-  1. you wish to either modify your existing order, or to terminate your order.
+  1. you wish to either modify your existing order or to terminate your order.
 
   If you are not the plaintiff or if you are the subject of an Abuse Prevention Order, then
   **do not run this tool**.  Instead, you should **TODO: INSTRUCTIONS TO GO HERE**.
@@ -136,6 +132,8 @@ fields:
         You cannot continue unless you are the plaintiff.
 ---
 id: type of request
+# TODO: How do they say which prevention order they want to modify?
+# TODO: Where do they explain what modifications they want?
 question: |
   What are you asking the Court to do?
 subquestion: |
@@ -155,7 +153,7 @@ code: |
     terminate_order = True
     modify_order = False
 ---
-# TODO: If they answer 'I do not understand', can they continue?
+# TODO: Can they continue without this?
 id: explanation of future orders
 question: |
   Please confirm that you understand this statement
@@ -196,16 +194,16 @@ continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_preview_question
 question: |
   Preview your form
 subquestion: |
-  Here is a preview of the form you'll sign on the next page.
+  Here is a preview of the form you'll sign.
   Please check that the details in the form are correct before
   you sign. 
   
-   ${a_plaintiff_s_motion_to_modify_qc_v20009_attachment_preview}
+  ${ a_plaintiff_s_motion_to_modify_qc_v20009_attachment_preview }
 ---
 id: motion to modify attachment preview
 attachment:
     variable name: a_plaintiff_s_motion_to_modify_qc_v20009_attachment_preview
-    name: Plaintiff Motion to Modify  - 209a
+    name: Plaintiff\'s Motion to Modify or Terminate an Abuse Prevention Order - 209a
     filename: Plaintiffs_Motion_to_Modify__209a
     pdf template file: 209A_plaintiff_s_motion_to_modify.pdf
     editable: False
@@ -226,24 +224,22 @@ progress: 100
 question: |
   Completed Form
 subquestion: |
-  Your completed, signed Plaintiff Motion to Modify or Terminate an Abuse Prevention Order
-  form is below.  You can download or email the form.
+  Your completed nd signed Plaintiff Motion to Modify or Terminate an Abuse Prevention Order
+  form is below.  Use the "PDF" link below to download a copy.  You
+  can also email the form to yourself or someone else.
   
-  ### Next steps
+  ### TODO: Next steps
   
   1. Step 1
   1. Step 2
   
-  This is a preview of your form.  Use the **PDF** link below to download a copy.  You
-  can also email the form to yourself or someone else.
-  
-  ${a_plaintiff_s_motion_to_modify_qc_v20009_attachment }
+  ${ a_plaintiff_s_motion_to_modify_qc_v20009_attachment }
 attachment code: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
 ---
 id: motion to modify attachment
 attachment:
     variable name: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
-    name: Plaintiff\'s Motion to Modify or Terminate Abuse Prevention Order - 209a
+    name: Plaintiff\'s Motion to Modify or Terminate an Abuse Prevention Order - 209a
     filename: Plaintiffs_Motion_to_Modify__209a
     pdf template file: 209A_plaintiff_s_motion_to_modify.pdf
     editable: False    
