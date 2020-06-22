@@ -88,6 +88,8 @@ code: |
   # Set the preferred/allowed courts for this interview
   preferred_court = interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"]["preferred court"]
   allowed_courts = interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"]["allowed courts"]
+
+  # Custom code
   # Only a plaintiff can fill in this form so we'll hard-code it here
   user_ask_role = 'plaintiff'
   str(users[0])
@@ -97,20 +99,20 @@ code: |
   users[0].statement
   understand_yes
   str(users[0])
+  
+  # Standard code
   signature_date
-  # By default, we'll mark any un-filled fields as DAEmpty(). This helps avoid errors if you intentionally hide a logic branch or mark a question not required
-  # Comment out the line below if you don't want this behavior. 
-  mark_unfilled_fields_empty(interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"])
   a_plaintiff_s_motion_to_modify_qc_v20009_preview_question # Pre-canned preview screen
   basic_questions_signature_flow
   users[0].signature
   a_plaintiff_s_motion_to_modify_download
+  download_titles = [ "209a Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order" ]
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
 ---
 id: motion to modify intro
 continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_intro
 question: |
-  Plaintiff Motion to Modify or Terminate an Abuse Prevention Order
+  Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order
 subquestion: |
   This tool helps you to generate a *Plaintiff's Motion to Modify or Terminate Abuse
   Prevention Order* (pursuant to G.L. c. 209A).
@@ -123,8 +125,15 @@ subquestion: |
   If you are not the plaintiff or if you are the subject of an Abuse Prevention Order, then
   **do not run this tool**.  Instead, you should **TODO: INSTRUCTIONS TO GO HERE**.
 fields:
-  - I am the plaintiff and I want to continue: a_plaintiff_s_motion_to_modify_qc_v20009_intro
-    datatype: yesnowide
+  - no label: a_plaintiff_s_motion_to_modify_qc_v20009_intro
+    datatype: checkboxes
+    none of the above: False    
+    minlength: 1
+    choices:
+      - I am the plaintiff and I want to continue
+    validation messages:
+      minlength: |
+        You cannot continue unless you are the plaintiff.
 ---
 id: type of request
 question: |
@@ -147,8 +156,6 @@ code: |
     modify_order = False
 ---
 # TODO: If they answer 'I do not understand', can they continue?
-# Display the new abuse order understanding as a question with a single
-# checkbox
 id: explanation of future orders
 question: |
   Please confirm that you understand this statement
@@ -161,10 +168,14 @@ subquestion: |
   - by using force, threat, or duress makes me engage in sexual relations
 fields:
   - no label: understand_yes
-    datatype: radio
+    datatype: checkboxes
+    none of the above: False    
+    minlength: 1
     choices:
-      - I understand: True
-      - I do not understand: False
+      - I understand I can still make a new order in the future: Yes
+    validation messages:
+      minlength: |
+        You cannot continue unless you confirm you understand.
 ---
 # TODO: How do we handle things like the below mako with translations?
 # Option: Hard code the intended sentences.
