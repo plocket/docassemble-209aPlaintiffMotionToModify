@@ -104,12 +104,7 @@ code: |
   
   basic_questions_signature_flow
   users[0].signature
-  if a_plaintiff_s_motion_to_modify_qc_v20009_wants_to_download_without_coverpage == 'Yes':
-    a_plaintiff_s_motion_to_modify_qc_v20009_download_without_coverpage
-
-  send_to_court_label = '<i class="fa fa-' + send_icon + '" aria-hidden="true"></i> Send to ' + court_names
-  should_cc_user
-  ready_to_send
+  download_form
     
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
 ---
@@ -228,16 +223,17 @@ fields:
 ---
 id: review before signature
 need: form_to_sign
-progress: 90
 continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_preview_question
-comment: |
-  Only helps if there is review functionality
 question: |
-  Check the form
+  Nearly finished
 subquestion: |
-  You are almost done! Tapping the image will open a **new window** where you can check that the form is correct. Come back to this window after you close that one. Then you can get to the final step of signing and sending the form to the court.
+  You are almost done! Please tap on the form below. It will open in a new window so you can check it and make sure it is correct.
   
-  ${ form_to_sign }
+  Don't forget to come back to this page to click to the final step of signing and sending the form to the court. 
+  
+   ${form_to_sign }
+
+progress: 95
 ---
 id: preview
 attachment:
@@ -257,114 +253,57 @@ attachment:
       - "plaintiff_statement": ${ users[0].statement }
       - "understand_yes": ${ understand_yes }
 ---
-id: download or send
-question: |
-  Do you want to download the signed form before the last questions?
-subquestion: |
-  You might want to do this if you want to download and mail the form yourself. You can still download the form later with the {coverpage <i class="fa fa-question-circle" aria-hidden="true"></i>} if you want.
-  
-  There are only a few more questions left before emailing the form. What do you want to do?
-fields:
-  - no label: a_plaintiff_s_motion_to_modify_qc_v20009_wants_to_download_without_coverpage
-    datatype: radio
-    choices:
-      - I want to download the signed form first: Yes
-      - I want to finish the form: No
-terms:
-  - coverpage <i class="fa fa-question-circle" aria-hidden="true"></i>: |
-      This is a page that comes before the rest of your form and only the court clerk sees it. It give the court extra information it needs like how to contact you or any extra instructions you want to give to the court.
----
 id: download form
-progress: 95
-section: download
+event: download_form
+progress: 100
 attachment code: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
-field: a_plaintiff_s_motion_to_modify_qc_v20009_download_without_coverpage
+section: download
 comment: |
-  The attachment email screen relies on final_form_to_file being defined. This will be built from the interview_metadata dictionary's contents, but if you add any addenda you will want to set this in a code block somewhere that takes priority over basic-questions.yml.
-  Add back in if needed: 
-    ${ action_button_html( url_action('form_delivery_complete'), id_tag="submitToCourt", label="Submit to " + str(courts[0].name), icon=send_icon, size="md", color="primary")}
+  The attachment email screen relies on final_form_to_file being defined. This
+  will be built from the interview_metadata dictionary's contents, but if you
+  add any addenda you will want to set this in a code block somewhere that takes
+  priority over basic-questions.yml.
+  To restore: Correct any errors using the "Make changes" button below.
+  ${ form_to_file_no_cover }
+  
+  ${action_button_html(url_action('review_all_sections'), icon='edit', label=word("Make changes"))}
 decoration: file-download
 question: |
   % if not defined('email_success') or not email_success:
-  Download signed the form without the coverpage
+  Review and Download, and Send Form
   % else:
-  Your form has already been emailed to ${ court_names }
+  Form delivered
   % endif
 subquestion: |
   % if not defined('email_success') or not email_success:
-  Thank you ${users[0]}, here are your next steps:
+  Thank you ${users[0]}. Your form is ready to send to the court. **It is not
+  delivered until you complete the delivery process below.**
 
-  1. Tap the image below to see the form in a new window. **IMPORTANT: Do not edit that PDF.** We cannot save the changes you make there and if you download that form your changes will not be saved there either.
-  1. If something doesn't look right, use the "Make changes" button below to change your answers.
-  1. Download or print a copy of this form for your records.
-  1. If you want to you can email it to yourself or someone else.
-
+  1. Click the preview image below to open the form in a new window.
+  1. Download and save or print a copy of this form for your 
+  records.
+  1. Click the "Submit to ${courts[0]}" button to send it to the court. 
+  1. You will have a chance to add instructions to the clerk and see the cover page before final delivery.
   % else:
   If you do not hear from the court in 1 business day, call the Trial Court’s
   Emergency HelpLine 833-91-COURT (833-912-6878).
   
-  The Emergency HelpLine is open:[BR]
-  8:30am - 4:30pm,[BR]
-  Monday - Friday.[BR]
+  The Emergency HelpLine is open:  
+  8:30am - 4:30pm,   
+  Monday - Friday.
   % endif
   
-  ${ form_to_file_no_cover }  
+  ${ form_to_file_no_cover }
   
   % if not defined('email_success') or not email_success:
-  ${action_button_html(url_action('review_all_sections'), icon='edit', label=word("Make changes"))} 
-  % endif
----
-id: who to cc
-need:
-  - comments_to_clerk
-  - package_version_number
-question: |
-  Do you or someone else want a copy of the email?
-fields:
-  - I want to send a copy to myself or someone else: should_cc_user
-    datatype: yesno
-  - Email address: cc_email
-    datatype: email
-    show if: should_cc_user
-    default: ${ users[0].email if defined('users[0].email') else '' }
----
-id: ready to email to the court
-event: ready_to_send
-question: |
-  Send to ${ court_names }
-subquestion: |
-  
-  Below is your ${ comma_and_list( download_titles ) } document with the 
-  cover page that we will email to ${ court_names }.
-  
-  Click "Back" if you need to make any changes.[BR]
-  % if not defined('email_success') or not email_success or not found_email:
-  Click "Send to court" to email it.
-  % endif
-  
-  Here is what the clerk at ${ court_names } will get:
-
-  ${ final_form_to_file }  
-  [:file-download: Download this form with cover page](${final_form_to_file.url_for(attachment=True)})
-
-  % if not defined('email_success') or not email_success:
-  <br/>
-  <br/>
-  ${ action_button_html( url_action('complete_form_delivery'), label=send_to_court_label, size="lg" ) }
-  <br/>
-  <br/>
-  % elif found_email:
-  We will email it securely. Please allow up to 15 minutes for the email to
-  arrive.
+    ${ action_button_html( url_action('form_delivery_complete'), id_tag="submitToCourt", label="Submit to " + str(courts[0].name), icon=send_icon, size="md", color="primary")}
+    
+  Or download/email below:
   % else:
-  There was a problem emailing this to ${ court_names }. We couldn't
-  locate the contact information for this court.
+    Your email has already been delivered to ${courts[0]}
+    
+  [:file-download: Download with cover page](${final_form_to_file.url_for()})    
   % endif
----
-comment: |
-  longer explanatory text
-  - note: |
-      ${ prog_disclose( fruit_explanation ) }
 ---
 id: motion to modify attachment
 attachment:
