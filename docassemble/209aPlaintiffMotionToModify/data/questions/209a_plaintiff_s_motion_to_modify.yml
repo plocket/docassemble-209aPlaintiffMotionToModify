@@ -1,6 +1,12 @@
 include:
   - docassemble.MAVirtualCourt:basic-questions.yml
 ---
+features:
+  navigation: True
+---
+#sections:
+#  - Type of request
+---
 id: metadata
 mandatory: True
 code: |
@@ -83,9 +89,9 @@ code: |
   # Custom code
   # Only a plaintiff can fill in this form so we'll hard-code it here
   user_ask_role = 'plaintiff'
-  str(users[0])
-  str(other_parties[0])
-  modify_order
+  users[0]
+  other_parties[0]
+  order_type
   users[0].statement
   understand_yes
   str(users[0])
@@ -153,21 +159,22 @@ fields:
         You cannot continue unless you are the plaintiff.
 ---
 id: type of request
+section: Type of request
 # TODO: How do they say which prevention order they want to modify?
 # TODO: Where do they explain what modifications they want?
 question: |
-  What are you asking the Court to do?
+  What are you asking the court to do?
 subquestion: |
   I request that the court:
 fields:
-  - no label: MJFmodify_terminate
+  - no label: order_type
     datatype: radio
     choices:
       - modify this Abuse Prevention Order: modify
       - terminate this Abuse Prevention Order: terminate
 ---
 code: |
-  if MJFmodify_terminate == 'modify':
+  if order_type == 'modify':
     terminate_order = False
     modify_order = True
   else:
@@ -179,7 +186,7 @@ id: explanation of future orders
 question: |
   Please confirm that you understand this statement
 subquestion: |
-  I understand that, even if I ${ MJFmodify_terminate } this order,
+  I understand that, even if I ${ order_type } this order,
   I can fill out a new Abuse Prevention Order at any time if the **Defendant** (person against whom I took out the Abuse Prevention Order):
 
   - harms or attempts to harm me physically; or 
@@ -202,10 +209,10 @@ fields:
 # I suspect the first will useful in most places.
 id: reason for request
 question: |
-  Reasons supporting your request to ${ MJFmodify_terminate } your restraining order
+  Reasons supporting your request to ${ order_type } your restraining order
 subquestion: |
   Please enter the reasons why you have asked the court
-  to ${ MJFmodify_terminate } your restraining order below.
+  to ${ order_type } your restraining order below.
 fields:
   - no label: users[0].statement
     input type: area
@@ -257,7 +264,7 @@ id: download form
 event: download_form
 progress: 100
 attachment code: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
-section: download
+section: Download
 comment: |
   The attachment email screen relies on final_form_to_file being defined. This
   will be built from the interview_metadata dictionary's contents, but if you
@@ -295,6 +302,8 @@ subquestion: |
   
   ${ form_to_file_no_cover }
   
+  ${action_button_html(url_action('review_all_sections'), icon='edit', label=word("Make changes"))}
+  
   % if not defined('email_success') or not email_success:
     ${ action_button_html( url_action('form_delivery_complete'), id_tag="submitToCourt", label="Submit to " + str(courts[0].name), icon=send_icon, size="md", color="primary")}
     
@@ -323,3 +332,25 @@ attachment:
       - "plaintiff_statement": ${ users[0].statement }
       - "understand_yes": ${ understand_yes }
       - "plaintiff_signature": ${ users[0].signature }
+---
+event: review_all_sections
+question: |
+  Review of your answers
+subquestion: |
+  
+  ${showifdef('form_to_sign')}
+
+  % if defined('form_delivery_complete'):
+  **Warning: your form has already been delivered.** Any changes you make
+  will _not_ be sent to the court.
+
+  % endif
+  Click a section to revisit the answers from that section.
+
+  % for section in section_links( nav ):
+  * ${ section }
+  % endfor
+  
+  Press "${word("Resume")}" to go back to the interview.
+buttons:
+  ${word("Resume")}: continue
