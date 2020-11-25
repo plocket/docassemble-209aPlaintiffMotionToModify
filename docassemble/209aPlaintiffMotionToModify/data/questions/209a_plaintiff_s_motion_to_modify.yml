@@ -204,7 +204,7 @@ question: |
   Please confirm that you understand this statement
 subquestion: |
   I understand that, even if I ${ order_type } this order,
-  I can fill out a new Abuse Prevention Order at any time if the **Defendant** (person against whom I took out the Abuse Prevention Order):
+  I can fill out a new Abuse Prevention Order at any time if ${other_parties[0]}:
 
   - harms or attempts to harm me physically; or 
   - places me in fear of imminent serious physical harm; or
