@@ -89,8 +89,12 @@ code: |
   # Custom code
   # Only a plaintiff can fill in this form so we'll hard-code it here
   user_ask_role = 'plaintiff'
-  users[0]
-  other_parties[0]
+  users[0].name.first
+  users.there_is_another = False 
+  users.gathered = True
+  other_parties[0].name.first
+  other_parties.there_is_another = False 
+  other_parties.gathered = True
   order_type
   users[0].statement
   understand_yes
