@@ -118,6 +118,19 @@ code: |
     
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
 ---
+id: defendant name
+question:  |
+  What is the defendant's name?
+fields:
+  - First Name: other_parties[0].name.first
+  - Middle Name: other_parties[0].name.middle
+    required: False
+  - Last Name: other_parties[0].name.last
+  - Suffix: other_parties[0].name.suffix
+    code: |
+      name_suffix()
+    required: False  
+---
 id: send email flow
 code: |
   prevent_going_back()
