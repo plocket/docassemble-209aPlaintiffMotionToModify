@@ -269,54 +269,26 @@ event: download_form
 progress: 100
 attachment code: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
 section: Download
-comment: |
-  The attachment email screen relies on final_form_to_file being defined. This
-  will be built from the interview_metadata dictionary's contents, but if you
-  add any addenda you will want to set this in a code block somewhere that takes
-  priority over basic-questions.yml.
-  To restore: Correct any errors using the "Make changes" button below.
-  ${ form_to_file_no_cover }
-  
-  ${action_button_html(url_action('review_all_sections'), icon='edit', label=word("Make changes"))}
 decoration: file-download
 question: |
-  % if not defined('email_success') or not email_success:
-  Review and Download, and Send Form
-  % else:
-  Form delivered
-  % endif
+  Review and Download
 subquestion: |
-  % if not defined('email_success') or not email_success:
-  Thank you ${users[0]}. Your form is ready to send to the court. **It is not
-  delivered until you complete the delivery process below.**
+  Thank you ${users[0]}. Your form is ready to give to the court. 
 
   1. Click the preview image below to open the form in a new window.
-  1. Download and save or print a copy of this form for your 
+  1. Download, save, email, or print a copy of this form for your 
   records.
-  1. Click the "Submit to ${courts[0]}" button to send it to the court. 
-  1. You will have a chance to add instructions to the clerk and see the cover page before final delivery.
-  % else:
-  If you do not hear from the court in 1 business day, call the Trial Court’s
-  Emergency HelpLine 833-91-COURT (833-912-6878).
+
+  The Trial Court’s Emergency HelpLine 833-91-COURT (833-912-6878). 
   
-  The Emergency HelpLine is open:  
-  8:30am - 4:30pm,   
+  The Emergency HelpLine is open: [BR]
+  8:30am - 4:30pm, [BR]  
   Monday - Friday.
-  % endif
   
   ${ form_to_file_no_cover }
   
   ${action_button_html(url_action('review_all_sections'), icon='edit', label=word("Make changes"))}
   
-  % if not defined('email_success') or not email_success:
-    ${ action_button_html( url_action('form_delivery_complete'), id_tag="submitToCourt", label="Submit to " + str(courts[0].name), icon=send_icon, size="md", color="primary")}
-    
-  Or download/email below:
-  % else:
-    Your email has already been delivered to ${courts[0]}
-    
-  [:file-download: Download with cover page](${final_form_to_file.url_for()})    
-  % endif
 ---
 id: motion to modify attachment
 attachment:
