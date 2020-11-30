@@ -190,6 +190,14 @@ fields:
       - modify this Abuse Prevention Order: modify
       - terminate this Abuse Prevention Order: terminate
 ---
+template: translate_word_modify
+content: |
+  modify
+---
+template: translate_word_terminate
+content: |
+  terminate
+---
 code: |
   if order_type == 'modify':
     terminate_order = False
@@ -203,7 +211,8 @@ id: explanation of future orders
 question: |
   Please confirm that you understand this statement
 subquestion: |
-  I understand that, even if I ${ order_type } this order,
+  I understand that, even if I ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
+  this order, 
   I can fill out a new Abuse Prevention Order at any time if ${other_parties[0]}:
 
   - harms or attempts to harm me physically; or 
@@ -226,10 +235,12 @@ fields:
 # I suspect the first will useful in most places.
 id: reason for request
 question: |
-  Reasons supporting your request to ${ order_type } your restraining order
+  Reasons supporting your request to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
+  your restraining order
 subquestion: |
   Please enter the reasons why you have asked the court
-  to ${ order_type } your restraining order below.
+  to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
+  your restraining order below.
 fields:
   - no label: users[0].statement
     input type: area
