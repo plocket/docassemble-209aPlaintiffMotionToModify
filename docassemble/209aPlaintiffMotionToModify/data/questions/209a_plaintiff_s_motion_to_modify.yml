@@ -4,9 +4,6 @@ include:
 features:
   navigation: True
 ---
-#sections:
-#  - Type of request
----
 id: metadata
 mandatory: True
 code: |
@@ -98,13 +95,12 @@ code: |
   order_type
   users[0].statement
   understand_yes
-  str(users[0])
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
   
   # Standard code
   users[0].address.address
   users[0].mobile_number
-  # Can this form be sent to the court?
+  # Needs below code even thought not sent to court
   courts[0].division
   court_names = comma_and_list( courts )
   signature_date
@@ -142,8 +138,6 @@ code: |
   form_to_file_no_cover = pdf_concatenate( a_plaintiff_s_motion_to_modify_qc_v20009_attachment, filename='Plaintiff Motion to Modify or Terminate an Abuse Prevention Order.pdf' )
 ---
 id: motion to modify intro
-# TODO: Should this be a required checkbox, or is the information
-# here less crucial than that?
 continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_intro
 question: |
   Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order
@@ -171,8 +165,6 @@ fields:
 ---
 id: type of request
 section: Type of request
-# TODO: How do they say which prevention order they want to modify?
-# TODO: Where do they explain what modifications they want?
 question: |
   What are you asking the court to do?
 subquestion: |
@@ -192,15 +184,6 @@ template: translate_word_terminate
 content: |
   terminate
 ---
-code: |
-  if order_type == 'modify':
-    terminate_order = False
-    modify_order = True
-  else:
-    terminate_order = True
-    modify_order = False
----
-# TODO: Can they continue without this?
 id: explanation of future orders
 question: |
   Please confirm that you understand this statement
@@ -223,10 +206,6 @@ fields:
       minlength: |
         You cannot continue unless you confirm you understand.
 ---
-# TODO: How do we handle things like the below mako with translations?
-# Option: Hard code the intended sentences.
-# Option: Make a templates that a variable is assigned to conditionally.
-# I suspect the first will useful in most places.
 id: reason for request
 question: |
   Reasons supporting your request to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
@@ -238,17 +217,6 @@ subquestion: |
 fields:
   - no label: users[0].statement
     input type: area
----
-#id: motion to modify preview
-#continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_preview_question
-#question: |
-#  Preview your form
-#subquestion: |
-#  Here is a preview of the form you'll sign.
-#  Please check that the details in the form are correct before
-#  you sign. 
-#  
-#  ${ a_plaintiff_s_motion_to_modify_qc_v20009_attachment_preview }
 ---
 id: review before signature
 need: form_to_sign
@@ -276,8 +244,8 @@ attachment:
       - "defendant_name": ${ other_parties }
       - "plaintiff_name__1": ${ users }
       - "court_division": ${ courts[0] }
-      - "modify_order": ${ modify_order }
-      - "terminate_order": ${ terminate_order }
+      - "modify_order": ${ order_type == "modify" }
+      - "terminate_order": ${ order_type == "terminate" }
       - "plaintiff_statement": ${ users[0].statement }
       - "understand_yes": ${ understand_yes }
       - "signature_date": ${ signature_date }
@@ -320,8 +288,8 @@ attachment:
       - "defendant_name": ${ other_parties }
       - "plaintiff_name__1": ${ users }
       - "court_division": ${ courts[0] }
-      - "modify_order": ${ modify_order }
-      - "terminate_order": ${ terminate_order }
+      - "modify_order": ${ order_type == "modify" }
+      - "terminate_order": ${ order_type == "terminate" }
       - "plaintiff_statement": ${ users[0].statement }
       - "understand_yes": ${ understand_yes }
       - "signature_date": ${ signature_date }
@@ -334,11 +302,6 @@ subquestion: |
   
   ${showifdef('form_to_sign')}
 
-  % if defined('form_delivery_complete'):
-  **Warning: your form has already been delivered.** Any changes you make
-  will _not_ be sent to the court.
-
-  % endif
   Click a section to revisit the answers from that section.
 
   % for section in section_links( nav ):
