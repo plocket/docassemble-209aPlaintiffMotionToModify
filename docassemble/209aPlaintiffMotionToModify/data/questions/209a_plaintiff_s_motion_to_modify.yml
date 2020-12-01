@@ -264,12 +264,12 @@ attachment:
       - "plaintiff_name": ${ users }
       - "defendant_name": ${ other_parties }
       - "plaintiff_name__1": ${ users }
-      - "signature_date": ${ signature_date }
       - "court_division": ${ courts[0] }
       - "modify_order": ${ modify_order }
       - "terminate_order": ${ terminate_order }
       - "plaintiff_statement": ${ users[0].statement }
       - "understand_yes": ${ understand_yes }
+      - "signature_date": ${ signature_date }
 ---
 id: download form
 event: download_form
@@ -308,13 +308,13 @@ attachment:
       - "plaintiff_name": ${ users }
       - "defendant_name": ${ other_parties }
       - "plaintiff_name__1": ${ users }
-      - "signature_date": ${ signature_date }
       - "court_division": ${ courts[0] }
       - "modify_order": ${ modify_order }
       - "terminate_order": ${ terminate_order }
       - "plaintiff_statement": ${ users[0].statement }
       - "understand_yes": ${ understand_yes }
-      - "plaintiff_signature": ${ users[0].signature }
+      - "signature_date": ${ signature_date }
+      - "user_signature": ${ users[0].signature }
 ---
 event: review_all_sections
 question: |
