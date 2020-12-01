@@ -131,12 +131,6 @@ fields:
       name_suffix()
     required: False  
 ---
-id: send email flow
-code: |
-  prevent_going_back()
-  email_status
-  complete_form_delivery = True
----
 id: form to sign
 # For consistency between interviews and to allow access from outside
 code: |
