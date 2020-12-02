@@ -1,6 +1,14 @@
 include:
   - docassemble.MAVirtualCourt:basic-questions.yml
 ---
+metadata:
+  title: |
+    209A Motion to Modify
+  short title: |
+    209A Motion to Modify
+  description: |
+    Request to modify a restraining order
+---
 features:
   navigation: True
 ---
@@ -93,7 +101,9 @@ code: |
   other_parties.there_is_another = False 
   other_parties.gathered = True
   order_type
-  users[0].statement
+  if order_type == "modify": 
+    what_to_modify
+  reason
   understand_yes
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
   
@@ -206,16 +216,19 @@ fields:
       minlength: |
         You cannot continue unless you confirm you understand.
 ---
+id: modification description
+question: |
+  What do you want to change?
+fields:
+  - no label: what_to_modify
+    input type: area
+---
 id: reason for request
 question: |
-  Reasons supporting your request to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
-  your restraining order
-subquestion: |
-  Please enter the reasons why you have asked the court
-  to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
-  your restraining order below.
+  Why do you want to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
+  your restraining order?
 fields:
-  - no label: users[0].statement
+  - no label: reason
     input type: area
 ---
 id: review before signature
@@ -246,7 +259,7 @@ attachment:
       - "court_division": ${ courts[0] }
       - "modify_order": ${ order_type == "modify" }
       - "terminate_order": ${ order_type == "terminate" }
-      - "plaintiff_statement": ${ users[0].statement }
+      - "plaintiff_statement": ${ (what_to_modify + ". " + reason) if order_type == "modify" else reason }
       - "understand_yes": ${ understand_yes }
       - "signature_date": ${ signature_date }
 ---
@@ -290,7 +303,7 @@ attachment:
       - "court_division": ${ courts[0] }
       - "modify_order": ${ order_type == "modify" }
       - "terminate_order": ${ order_type == "terminate" }
-      - "plaintiff_statement": ${ users[0].statement }
+      - "plaintiff_statement": ${ (what_to_modify + ". " + reason) if order_type == "modify" else reason }
       - "understand_yes": ${ understand_yes }
       - "signature_date": ${ signature_date }
       - "user_signature": ${ users[0].signature }
