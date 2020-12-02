@@ -111,8 +111,7 @@ code: |
   users[0].address.address
   users[0].mobile_number
   # Needs below code even thought not sent to court
-  courts[0].division
-  court_names = comma_and_list( courts )
+  courts[0]
   signature_date
   download_titles = [ "209a Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order" ]
 
