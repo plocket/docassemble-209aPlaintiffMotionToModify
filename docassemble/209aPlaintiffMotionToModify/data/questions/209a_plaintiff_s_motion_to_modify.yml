@@ -263,6 +263,7 @@ attachment:
       - "signature_date": ${ signature_date }
 ---
 id: download form
+need: form_to_file_no_cover 
 event: download_form
 progress: 100
 attachment code: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
@@ -285,10 +286,10 @@ subquestion: |
   
   ${ form_to_file_no_cover }
   
-  ${action_button_html(url_action('review_all_sections'), icon='edit', label=word("Make changes"))}
-  
+  ${action_button_html(url_action('review_A_plaintiff_s_motion_to_modify'), icon='edit', label=word("Make changes"))} 
 ---
 id: motion to modify attachment
+reconsider: True
 attachment:
     variable name: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
     name: Plaintiff\'s Motion to Modify or Terminate an Abuse Prevention Order - 209a
@@ -307,19 +308,51 @@ attachment:
       - "signature_date": ${ signature_date }
       - "user_signature": ${ users[0].signature }
 ---
-event: review_all_sections
+id: A_plaintiff_s_motion_to_modify review screen
+event: review_A_plaintiff_s_motion_to_modify
 question: |
-  Review of your answers
+  Placeholder Review Screen
 subquestion: |
-  
-  ${showifdef('form_to_sign')}
-
-  Click a section to revisit the answers from that section.
-
-  % for section in section_links( nav ):
-  * ${ section }
-  % endfor
-  
-  Press "${word("Resume")}" to go back to the interview.
-buttons:
-  ${word("Resume")}: continue
+  Edit your answers below
+review: 
+  - Edit: order_type
+    button: |
+      You said you need to **${ translate_word_modify if order_type == "modify" else translate_word_terminate }** your prevention order.
+  - Edit: what_to_modify
+    button: |
+      What to modify:
+      ${ what_to_modify }
+  - Edit: reason
+    button: |
+      Why you need to **${ translate_word_modify if order_type == "modify" else translate_word_terminate }** your prevention order:
+      ${ reason }
+  - Edit: users[0].name.first
+    button: |
+      Your name:
+      ${ users[0] }
+  - Edit: other_parties[0].name.first
+    button: |
+      Defendant:
+      ${ other_parties[0] }
+  - Edit: users[0].address.address
+    button: |
+      Your address:
+      ${ users[0].address.block() }
+  - Edit: users[0].other_phone
+    button: |
+      Your contact information:
+      ${users[0].phone_number} [BR]
+      ${users[0].email} [BR]
+      ${users[0].other_contact_method} [BR]
+  - Edit: courts[0]
+    button: |
+      Court:
+      ${ courts[0] }
+  - Edit: signature_date
+    button: |
+      Filing date:
+      ${ signature_date }
+  - Edit: users[0].signature
+    button: |
+      Your signature:
+      ${ users[0].signature }
