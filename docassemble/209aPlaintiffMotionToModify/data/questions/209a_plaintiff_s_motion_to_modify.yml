@@ -182,8 +182,13 @@ fields:
   - no label: order_type
     datatype: radio
     choices:
+      - terminate this Abuse Prevention Order: terminate 
       - modify this Abuse Prevention Order: modify
-      - terminate this Abuse Prevention Order: terminate
+  - What do you want to change about this order?: what_to_modify
+    input type: area
+    show if:
+      variable: order_type
+      is: modify
 ---
 template: translate_word_modify
 content: |
@@ -270,7 +275,7 @@ attachment code: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
 section: Download
 decoration: file-download
 question: |
-  Review and Download
+  Review and download
 subquestion: |
   Thank you ${users[0]}. Your form is ready to give to the court. 
 
@@ -311,39 +316,56 @@ attachment:
 id: A_plaintiff_s_motion_to_modify review screen
 event: review_A_plaintiff_s_motion_to_modify
 question: |
-  Placeholder Review Screen
+  Your answers
 subquestion: |
-  Edit your answers below
-review: 
-  - Edit: order_type
-    button: |
-      You said you need to **${ translate_word_modify if order_type == "modify" else translate_word_terminate }** your prevention order.
-  - Edit: what_to_modify
-    button: |
-      What to modify:
-      ${ what_to_modify }
-  - Edit: reason
-    button: |
-      Why you need to **${ translate_word_modify if order_type == "modify" else translate_word_terminate }** your prevention order:
-      ${ reason }
+  Click edit to change a question
+review:
   - Edit: users[0].name.first
     button: |
       Your name:
       ${ users[0] }
+  - Edit: users[0].address.address
+    button: |
+      Your address:[BR]
+      ${ users[0].address.block() }
+  - Edit: 
+      - users[0].mobile_number
+    button: |
+      Your contact information:[BR]
+      % if users[0].mobile_number: 
+        Mobile number: ${ users[0].mobile_number }[BR]
+      % endif
+      % if users[0].phone_number:
+        Other phone number: ${users[0].phone_number}[BR]
+      % endif
+      % if users[0].email: 
+        Email: ${users[0].email}[BR]
+      % endif
+      % if users[0].other_contact_method: 
+        Other contact method: ${users[0].other_contact_method}[BR]
+      % endif
   - Edit: other_parties[0].name.first
     button: |
       Defendant:
       ${ other_parties[0] }
-  - Edit: users[0].address.address
+  - Edit: order_type
     button: |
-      Your address:
-      ${ users[0].address.block() }
-  - Edit: users[0].other_phone
+      % if order_type == "modify":
+        You said you need to **modify** your prevention order.
+        
+        What to change about your prevention order:[BR]
+        ${ what_to_modify }
+      % else:
+        You said you need to **terminate** your prevention order.
+      % endif
+  - Edit: reason
     button: |
-      Your contact information:
-      ${users[0].phone_number} [BR]
-      ${users[0].email} [BR]
-      ${users[0].other_contact_method} [BR]
+      % if order_type == "modify":
+        Why you need to **modify** your prevention order:[BR]
+      % else:
+        Why you need to **terminate** your prevention order:[BR]
+      % endif
+      ${ reason }
   - Edit: courts[0]
     button: |
       Court:
