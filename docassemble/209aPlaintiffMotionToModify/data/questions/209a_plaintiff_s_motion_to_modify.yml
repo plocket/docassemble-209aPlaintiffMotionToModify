@@ -108,9 +108,10 @@ code: |
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
   
   # Standard code
-  users[0].address.address
-  users[0].mobile_number
-  # Needs below code even thought not sent to court
+  # Re-implement if this form goes to the court along with address impoundment
+  # users[0].address.address
+  # users[0].mobile_number
+  # form requires court division name
   courts[0]
   signature_date
   download_titles = [ "209a Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order" ]
@@ -235,6 +236,21 @@ fields:
   - no label: reason
     input type: area
 ---
+sets:
+  - courts[0]
+id: choose a court from list
+question: |
+  What court is your case in?
+subquestion: |
+  Look at your Abuse Prevention Order. Match the court name
+  there.
+fields:
+  - no label: courts[0]
+    datatype: object
+    object labeler: |
+      lambda y: y.short_label()
+    choices: macourts.filter_courts(allowed_courts)
+---
 id: review before signature
 need: form_to_sign
 continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_preview_question
@@ -324,26 +340,26 @@ review:
     button: |
       Your name:
       ${ users[0] }
-  - Edit: users[0].address.address
-    button: |
-      Your address:[BR]
-      ${ users[0].address.block() }
-  - Edit: 
-      - users[0].mobile_number
-    button: |
-      Your contact information:[BR]
-      % if users[0].mobile_number: 
-        Mobile number: ${ users[0].mobile_number }[BR]
-      % endif
-      % if users[0].phone_number:
-        Other phone number: ${users[0].phone_number}[BR]
-      % endif
-      % if users[0].email: 
-        Email: ${users[0].email}[BR]
-      % endif
-      % if users[0].other_contact_method: 
-        Other contact method: ${users[0].other_contact_method}[BR]
-      % endif
+  #- Edit: users[0].address.address
+  #  button: |
+  #    Your address:[BR]
+  #    ${ users[0].address.block() }
+  #- Edit: 
+  #    - users[0].mobile_number
+  #  button: |
+  #    Your contact information:[BR]
+  #    % if users[0].mobile_number: 
+  #      Mobile number: ${ users[0].mobile_number }[BR]
+  #    % endif
+  #    % if users[0].phone_number:
+  #      Other phone number: ${users[0].phone_number}[BR]
+  #    % endif
+  #    % if users[0].email: 
+  #      Email: ${users[0].email}[BR]
+  #    % endif
+  #    % if users[0].other_contact_method: 
+  #      Other contact method: ${users[0].other_contact_method}[BR]
+  #    % endif
   - Edit: other_parties[0].name.first
     button: |
       Defendant:
