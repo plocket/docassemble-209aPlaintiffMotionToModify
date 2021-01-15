@@ -93,6 +93,7 @@ code: |
 
   # Custom code
   # Only a plaintiff can fill in this form so we'll hard-code it here
+  docket_number
   user_ask_role = 'plaintiff'
   users[0].name.first
   users.there_is_another = False 
@@ -122,6 +123,14 @@ code: |
   download_form
     
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
+---
+id: docket number
+question: |
+  What is the docket number for your case?
+subquestion: |
+  If you do not know what your docket number is look at your original restraining order.
+fields:
+  - no label: docket_number
 ---
 id: defendant name
 question:  |
@@ -257,6 +266,7 @@ attachment:
     pdf template file: 209A_plaintiff_s_motion_to_modify.pdf
     editable: False
     fields: 
+      - "docket_number": ${ docket_number }
       - "plaintiff_name": ${ users }
       - "defendant_name": ${ other_parties }
       - "plaintiff_name__1": ${ users }
@@ -302,6 +312,7 @@ attachment:
     pdf template file: 209A_plaintiff_s_motion_to_modify.pdf
     editable: False    
     fields: 
+      - "docket_number": ${ docket_number }
       - "plaintiff_name": ${ users }
       - "defendant_name": ${ other_parties }
       - "plaintiff_name__1": ${ users }
@@ -320,6 +331,10 @@ question: |
 subquestion: |
   Click edit to change a question
 review:
+  - Edit: docket_number
+    button: |
+      Docket Number:
+      ${ docket_number } 
   - Edit: users[0].name.first
     button: |
       Your name:
