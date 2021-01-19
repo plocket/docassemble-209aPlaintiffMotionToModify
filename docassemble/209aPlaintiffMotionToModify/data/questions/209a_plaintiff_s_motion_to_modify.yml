@@ -192,8 +192,8 @@ fields:
   - no label: order_type
     datatype: radio
     choices:
-      - terminate this Abuse Prevention Order: terminate 
-      - modify this Abuse Prevention Order: modify
+      - End this Abuse Prevention Order: terminate 
+      - Change this Abuse Prevention Order: modify
   - What do you want to change about this order?: what_to_modify
     input type: area
     show if:
@@ -202,11 +202,11 @@ fields:
 ---
 template: translate_word_modify
 content: |
-  modify
+  change
 ---
 template: translate_word_terminate
 content: |
-  terminate
+  end
 ---
 id: explanation of future orders
 question: |
@@ -382,19 +382,19 @@ review:
   - Edit: order_type
     button: |
       % if order_type == "modify":
-        You said you need to **modify** your prevention order.
+        You said you need to **change** your prevention order.
         
         What to change about your prevention order:[BR]
         ${ what_to_modify }
       % else:
-        You said you need to **terminate** your prevention order.
+        You said you need to **end** your prevention order.
       % endif
   - Edit: reason
     button: |
       % if order_type == "modify":
-        Why you need to **modify** your prevention order:[BR]
+        Why you need to **change** your prevention order:[BR]
       % else:
-        Why you need to **terminate** your prevention order:[BR]
+        Why you need to **end** your prevention order:[BR]
       % endif
       ${ reason }
   - Edit: courts[0]
