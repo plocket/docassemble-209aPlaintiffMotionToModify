@@ -196,6 +196,7 @@ fields:
       - modify this Abuse Prevention Order: modify
   - What do you want to change about this order?: what_to_modify
     input type: area
+    maxlength: 2
     show if:
       variable: order_type
       is: modify
@@ -244,6 +245,7 @@ question: |
 fields:
   - no label: reason
     input type: area
+    maxlength: 2
 ---
 sets:
   - courts[0]
