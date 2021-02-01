@@ -194,12 +194,17 @@ fields:
     choices:
       - terminate this Abuse Prevention Order: terminate 
       - modify this Abuse Prevention Order: modify
+  - note: You can type a maximum of 540 characters
   - What do you want to change about this order?: what_to_modify
     input type: area
-    maxlength: 2
+    maxlength: 540
     show if:
       variable: order_type
       is: modify
+---
+code: |
+  what_to_modify = ""
+  #This is to ensure that the length of what_to_modify can be used in another calcuation
 ---
 template: translate_word_modify
 content: |
@@ -245,7 +250,7 @@ question: |
 fields:
   - no label: reason
     input type: area
-    maxlength: 2
+    maxlength: ${1089 - len(what_to_modify)}
 ---
 sets:
   - courts[0]
