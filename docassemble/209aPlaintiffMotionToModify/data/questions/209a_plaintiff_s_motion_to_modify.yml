@@ -119,6 +119,8 @@ code: |
 
   a_plaintiff_s_motion_to_modify_qc_v20009_preview_question # Pre-canned preview screen
   
+  users[0].states_above_true
+  
   basic_questions_signature_flow
   users[0].signature
   download_form
@@ -259,6 +261,34 @@ fields:
     object labeler: |
       lambda y: y.short_label()
     choices: macourts.filter_courts(allowed_courts)
+---
+id: Signing under oath
+question: |
+  Signing under oath 
+subquestion: |
+  When you sign your name you are declaring, "{under penalty of perjury}” that what you put in your affidavit is {true to the best of your knowledge}.
+  
+  Do you swear under penalty of perjury that all your answers to the questions in this interview are true, to the best of your knowledge?
+fields:
+  - no label: users[0].states_above_true
+    datatype: checkboxes
+    minlength: 1
+    choices:
+      - I swear that my answers on this form are the truth under penalties of perjury.
+    validation messages:
+      minlength: |
+        You cannot keep going unless you did your best to tell the truth.
+terms:
+  - under penalty of perjury: |
+      means you swear your answers are true, as far as you know.  
+         
+      Swearing "under penalty of perjury" means the court can punish you if your answers are not true to the best of your knowledge.  
+      
+      The court cannot punish you if your answers are about things you saw, heard, or felt.  
+      The court cannot punish you if you have good reason to believe that your answers are true.
+  - true to the best of your knowledge: |
+      Something is true "to the best of your knowledge" if you were there and saw, heard, or felt it.  
+      Something is true to the best of your knowledge if you have good reason to believe it is true.
 ---
 id: review before signature
 need: form_to_sign
