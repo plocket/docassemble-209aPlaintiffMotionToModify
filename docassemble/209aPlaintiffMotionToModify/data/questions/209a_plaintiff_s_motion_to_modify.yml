@@ -174,7 +174,7 @@ subquestion: |
   If you are not the plaintiff or if you are the subject of an Abuse Prevention Order, then
   **do not run this tool**.  Instead, you should **TODO: INSTRUCTIONS TO GO HERE**.
 fields:
-  - no label: a_plaintiff_s_motion_to_modify_qc_v20009_intro
+  - no label: is_plaintiff
     datatype: checkboxes
     none of the above: False    
     minlength: 1
