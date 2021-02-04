@@ -236,13 +236,6 @@ fields:
       minlength: |
         You cannot continue unless you confirm you understand.
 ---
-id: modification description
-question: |
-  What do you want to change?
-fields:
-  - no label: what_to_modify
-    input type: area
----
 id: reason for request
 question: |
   Why do you want to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
