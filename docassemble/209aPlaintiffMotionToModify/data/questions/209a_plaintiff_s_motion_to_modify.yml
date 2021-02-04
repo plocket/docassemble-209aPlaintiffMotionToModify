@@ -379,7 +379,9 @@ review:
     button: |
       Defendant:
       ${ other_parties[0] }
-  - Edit: order_type
+  - Edit: 
+      - order_type
+      - reason
     button: |
       % if order_type == "modify":
         You said you need to **modify** your prevention order.
