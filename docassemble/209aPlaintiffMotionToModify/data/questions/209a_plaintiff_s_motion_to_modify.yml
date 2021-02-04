@@ -119,6 +119,8 @@ code: |
 
   a_plaintiff_s_motion_to_modify_qc_v20009_preview_question # Pre-canned preview screen
   
+  users[0].states_above_true
+  
   basic_questions_signature_flow
   users[0].signature
   download_form
@@ -172,7 +174,7 @@ subquestion: |
   If you are not the plaintiff or if you are the subject of an Abuse Prevention Order, then
   **do not run this tool**.  Instead, you should **TODO: INSTRUCTIONS TO GO HERE**.
 fields:
-  - no label: a_plaintiff_s_motion_to_modify_qc_v20009_intro
+  - no label: is_plaintiff
     datatype: checkboxes
     none of the above: False    
     minlength: 1
@@ -192,8 +194,8 @@ fields:
   - no label: order_type
     datatype: radio
     choices:
-      - terminate this Abuse Prevention Order: terminate 
-      - modify this Abuse Prevention Order: modify
+      - End this Abuse Prevention Order: terminate 
+      - Change this Abuse Prevention Order: modify
   - note: You can type a maximum of 540 characters
   - What do you want to change about this order?: what_to_modify
     input type: area
@@ -208,11 +210,11 @@ code: |
 ---
 template: translate_word_modify
 content: |
-  modify
+  change
 ---
 template: translate_word_terminate
 content: |
-  terminate
+  end
 ---
 id: explanation of future orders
 question: |
@@ -259,6 +261,34 @@ fields:
     object labeler: |
       lambda y: y.short_label()
     choices: macourts.filter_courts(allowed_courts)
+---
+id: Signing under oath
+question: |
+  Signing under oath 
+subquestion: |
+  When you sign your name you are declaring, "{under penalty of perjury}” that what you put in your affidavit is {true to the best of your knowledge}.
+  
+  Do you swear under penalty of perjury that all your answers to the questions in this interview are true, to the best of your knowledge?
+fields:
+  - no label: users[0].states_above_true
+    datatype: checkboxes
+    minlength: 1
+    choices:
+      - I swear that my answers on this form are the truth under penalties of perjury.
+    validation messages:
+      minlength: |
+        You cannot keep going unless you did your best to tell the truth.
+terms:
+  - under penalty of perjury: |
+      means you swear your answers are true, as far as you know.  
+         
+      Swearing "under penalty of perjury" means the court can punish you if your answers are not true to the best of your knowledge.  
+      
+      The court cannot punish you if your answers are about things you saw, heard, or felt.  
+      The court cannot punish you if you have good reason to believe that your answers are true.
+  - true to the best of your knowledge: |
+      Something is true "to the best of your knowledge" if you were there and saw, heard, or felt it.  
+      Something is true to the best of your knowledge if you have good reason to believe it is true.
 ---
 id: review before signature
 need: form_to_sign
@@ -384,19 +414,19 @@ review:
       - reason
     button: |
       % if order_type == "modify":
-        You said you need to **modify** your prevention order.
+        You said you need to **change** your prevention order.
         
         What to change about your prevention order:[BR]
         ${ what_to_modify }
       % else:
-        You said you need to **terminate** your prevention order.
+        You said you need to **end** your prevention order.
       % endif
   - Edit: reason
     button: |
       % if order_type == "modify":
-        Why you need to **modify** your prevention order:[BR]
+        Why you need to **change** your prevention order:[BR]
       % else:
-        Why you need to **terminate** your prevention order:[BR]
+        Why you need to **end** your prevention order:[BR]
       % endif
       ${ reason }
   - Edit: courts[0]
