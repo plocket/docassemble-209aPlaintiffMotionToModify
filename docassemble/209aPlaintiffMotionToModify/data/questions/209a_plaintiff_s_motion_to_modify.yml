@@ -197,6 +197,9 @@ fields:
       - End this Abuse Prevention Order: terminate 
       - Change this Abuse Prevention Order: modify
   - note: You can type a maximum of 540 characters
+    show if:
+      variable: order_type
+      is: modify
   - What do you want to change about this order?: what_to_modify
     input type: area
     maxlength: 540
@@ -246,6 +249,7 @@ fields:
   - no label: reason
     input type: area
     maxlength: ${1089 - len(what_to_modify)}
+  - note: You can type a maximum of ${1089 - len(what_to_modify)} characters
 ---
 sets:
   - courts[0]
