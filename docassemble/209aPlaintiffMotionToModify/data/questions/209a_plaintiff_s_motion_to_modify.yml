@@ -301,10 +301,13 @@ subquestion: |
   Don't forget to come back to this page to click to the final step of signing and sending the form to the court. 
   
    ${form_to_sign }
+   
+   ${action_button_html(url_action('review_A_plaintiff_s_motion_to_modify'), icon='edit', label=word("Make changes"))}
 
 progress: 95
 ---
 id: preview
+reconsider: True
 attachment:
     variable name: a_plaintiff_s_motion_to_modify_qc_v20009_attachment_preview
     name: Plaintiff\'s Motion to Modify or Terminate an Abuse Prevention Order - 209a
