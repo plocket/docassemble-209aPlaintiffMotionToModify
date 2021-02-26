@@ -196,11 +196,20 @@ fields:
     choices:
       - End this Abuse Prevention Order: terminate 
       - Change this Abuse Prevention Order: modify
-  - What do you want to change about this order?: what_to_modify
-    input type: area
+  - note: You can type a maximum of 540 characters
     show if:
       variable: order_type
       is: modify
+  - What do you want to change about this order?: what_to_modify
+    input type: area
+    maxlength: 540
+    show if:
+      variable: order_type
+      is: modify
+---
+code: |
+  what_to_modify = ""
+  #This is to ensure that the length of what_to_modify can be used in another calcuation
 ---
 template: translate_word_modify
 content: |
@@ -232,13 +241,6 @@ fields:
       minlength: |
         You cannot continue unless you confirm you understand.
 ---
-id: modification description
-question: |
-  What do you want to change?
-fields:
-  - no label: what_to_modify
-    input type: area
----
 id: reason for request
 question: |
   Why do you want to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
@@ -246,6 +248,8 @@ question: |
 fields:
   - no label: reason
     input type: area
+    maxlength: ${1089 - len(what_to_modify)}
+  - note: You can type a maximum of ${1089 - len(what_to_modify)} characters
 ---
 sets:
   - courts[0]
@@ -412,7 +416,9 @@ review:
     button: |
       Defendant:
       ${ other_parties[0] }
-  - Edit: order_type
+  - Edit: 
+      - order_type
+      - reason
     button: |
       % if order_type == "modify":
         You said you need to **change** your prevention order.
