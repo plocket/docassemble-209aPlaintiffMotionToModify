@@ -3,11 +3,11 @@ include:
 ---
 metadata:
   title: |
-    209A Motion to Modify
+    209A Plaintiff's Motion to Modify an Abuse Prevention Order
   short title: |
-    209A Motion to Modify
+    209A Plaintiff's Motion to Modify
   description: |
-    Request to modify a restraining order
+    If the plaintiff already has a restraining order, they can ask the court to change or end it.
 ---
 features:
   navigation: True
@@ -131,7 +131,7 @@ id: docket number
 question: |
   What is the docket number for your case?
 subquestion: |
-  If you do not know what your docket number is look at your original restraining order.
+  Look at your Abuse Prevention Order. Write the docket number you see there.
 fields:
   - no label: docket_number
 ---
@@ -163,23 +163,24 @@ continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_intro
 question: |
   Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order
 subquestion: |
-  This tool helps you to generate a *Plaintiff's Motion to Modify or Terminate an Abuse
-  Prevention Order* (pursuant to G.L. c. 209A).
+  This tool can help someone who made a 209A Abuse Prevention Order and now needs to ask the court to change it or end it (pursuant to G.L. c. 209A).
 
-  You should only run this tool if you are the **Plaintiff**,  that is:
+  You should only use this if:
   
-  1. you have an Abuse Prevention Order; **and**
-  1. you need to either change your existing order or to end your order.
-
-  If you are not the plaintiff or if you are the subject of an Abuse Prevention Order, then
-  **do not run this tool**.  Instead, you should **TODO: INSTRUCTIONS TO GO HERE**.
+  1. you already have a 209A Abuse Prevention Order **and**
+  1. you are the one that asked for that order **and**
+  1. you need to change or end your existing order
+  
+  If you are the defendant in this case and need to ask the court to change or end the Abuse Prevention Order, **TODO: INSTRUCTIONS TO GO HERE**.
+  
+  You will need to know the docket number of your original order and the court that gave you the original order.
 fields:
   - no label: is_plaintiff
     datatype: checkboxes
     none of the above: False    
     minlength: 1
     choices:
-      - I am the plaintiff and I want to continue
+      - I am the plaintiff
     validation messages:
       minlength: |
         You cannot continue unless you are the plaintiff.
@@ -188,19 +189,17 @@ id: type of request
 section: Type of request
 question: |
   What are you asking the court to do?
-subquestion: |
-  I request that the court:
 fields:
   - no label: order_type
     datatype: radio
     choices:
       - End this Abuse Prevention Order: terminate 
       - Change this Abuse Prevention Order: modify
-  - note: You can type a maximum of 540 characters
+  - note: You can only type up to 540 characters.
     show if:
       variable: order_type
       is: modify
-  - What do you want to change about this order?: what_to_modify
+  - What do you need to change about this order?: what_to_modify
     input type: area
     maxlength: 540
     show if:
@@ -225,31 +224,62 @@ question: |
 subquestion: |
   I understand that, even if I ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
   this order, 
-  I can fill out a new Abuse Prevention Order at any time if ${other_parties[0]}:
+  I can fill out a new Abuse Prevention Order at any time if ${other_parties[0]} does any of these things:
 
-  - harms or attempts to harm me physically; or 
-  - places me in fear of imminent serious physical harm; or
-  - by using force, threat, or duress makes me engage in sexual relations
+  - makes you AFRAID that ${ other_parties.familiar() } will seriously hurt you, physically
+  - tries to physically hurt you
+  - physically hurts you
+  - threatens, pressures, or forces you to have sex
 fields:
   - no label: understand_yes
     datatype: checkboxes
     none of the above: False    
     minlength: 1
     choices:
-      - I understand I can still make a new order in the future: Yes
+      - I understand I can still ask for a new order in the future: Yes
     validation messages:
       minlength: |
         You cannot continue unless you confirm you understand.
 ---
+# TODO: Change to 'need' when other PRs are merged
 id: reason for request
 question: |
   Why do you want to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
   your restraining order?
 fields:
+  - note: You can only type up to ${1089 - len(what_to_modify)} characters.
   - no label: reason
     input type: area
     maxlength: ${1089 - len(what_to_modify)}
-  - note: You can type a maximum of ${1089 - len(what_to_modify)} characters
+---
+# How do we implement this? Previously, in order
+# to tell the user how many characters they had left
+# more effectively, we put 'what to modify' and 'reason'
+# on different pages. We asked both to make sure the user
+# included the 'what' part. If the user said they want to
+# terminate, though, and they tap to edit on the review screen
+# and change to 'modify', they need to add the 'what' part.
+# How do we properly prompt them to do that once we
+# have the full affidavit? We can't split the full affidavit
+# back up. Maybe we delete 'what' to modify if they switch
+# to 'terminate' so we can then ask 'what' and combine the two
+# instead of having 'reason' separately... not sure this
+# can work out cleanly.
+if: order_type == "modify"
+id: full affidavit
+question: |
+  This is your Affidavit
+subquestion: |
+  These are your words. Edit this statement in any way you need so that it says exactly what you need to tell the judge.  
+  Once you are satisfied you have told the truth, as far as you know, tap to continue.
+  
+fields:
+  - note: You can only type up to 1089 characters.
+  - no label: full_affidavit
+    input type: area
+    maxlength: 1089
+    default: |
+      ${ what_to_modify + ". " + reason }
 ---
 sets:
   - courts[0]
@@ -257,8 +287,8 @@ id: choose a court from list
 question: |
   What court is your case in?
 subquestion: |
-  Look at your Abuse Prevention Order. Match the court name
-  there.
+  Look at your Abuse Prevention Order. Pick the court name
+  you see there.
 fields:
   - no label: courts[0]
     datatype: object
@@ -270,7 +300,7 @@ id: Signing under oath
 question: |
   Signing under oath 
 subquestion: |
-  When you sign your name you are declaring, "{under penalty of perjury}” that what you put in your affidavit is {true to the best of your knowledge}.
+  When you sign your name you are saying "{under penalty of perjury}” that what you wrote is {true to the best of your knowledge}.
   
   Do you swear under penalty of perjury that all your answers to the questions in this interview are true, to the best of your knowledge?
 fields:
@@ -284,15 +314,15 @@ fields:
         You cannot keep going unless you did your best to tell the truth.
 terms:
   - under penalty of perjury: |
-      means you swear your answers are true, as far as you know.  
+      Swearing "under penalty of perjury" means you swear your answers are true, as far as you know.  
          
-      Swearing "under penalty of perjury" means the court can punish you if your answers are not true to the best of your knowledge.  
+      The court can punish you if your answers are not true to the best of your knowledge.  
       
       The court cannot punish you if your answers are about things you saw, heard, or felt.  
       The court cannot punish you if you have good reason to believe that your answers are true.
   - true to the best of your knowledge: |
       Something is true "to the best of your knowledge" if you were there and saw, heard, or felt it.  
-      Something is true to the best of your knowledge if you have good reason to believe it is true.
+      Something is true "to the best of your knowledge" if you have good reason to believe it is true.
 ---
 id: review before signature
 need: form_to_sign
@@ -300,13 +330,13 @@ continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_preview_question
 question: |
   Nearly finished
 subquestion: |
-  You are almost done! Please tap on the form below. It will open in a new window so you can check it and make sure it is correct.
+  You are almost done! Before you continue to sign the form, check the form below. Tap on it. It will open in a new window so you can check it and make sure it is correct.
   
-  Don't forget to come back to this page to click to the final step of signing and sending the form to the court. 
+  Remember to come back to this page to go on to sign the form.
   
-   ${form_to_sign }
+  ${form_to_sign }
    
-   ${action_button_html(url_action('review_A_plaintiff_s_motion_to_modify'), icon='edit', label=word("Make changes"))}
+  ${action_button_html( url_action('review_A_plaintiff_s_motion_to_modify'), icon='edit', label=word("Make changes") )}
 
 progress: 95
 ---
@@ -315,7 +345,7 @@ reconsider: True
 attachment:
     variable name: a_plaintiff_s_motion_to_modify_qc_v20009_attachment_preview
     name: Plaintiff\'s Motion to Modify or Terminate an Abuse Prevention Order - 209a
-    filename: Plaintiffs_Motion_to_Modify__209a
+    filename: Plaintiffs-Motion-to-Modify-209a
     pdf template file: 209A_plaintiff_s_motion_to_modify.pdf
     editable: False
     fields: 
@@ -342,11 +372,12 @@ question: |
 subquestion: |
   Thank you ${users[0]}. Your form is ready to give to the court. 
 
-  1. Click the preview image below to open the form in a new window.
+  1. Tap the preview image below to open the form in a new window.
   1. Download, save, email, or print a copy of this form for your 
   records.
+  1. Mail or take the form by hand to ${ courts[0] }.
 
-  The Trial Court’s Emergency HelpLine 833-91-COURT (833-912-6878). 
+  The Trial Court’s Emergency HelpLine is 833-91-COURT (833-912-6878). 
   
   The Emergency HelpLine is open: [BR]
   8:30am - 4:30pm, [BR]  
@@ -354,14 +385,14 @@ subquestion: |
   
   ${ form_to_file_no_cover }
   
-  ${action_button_html(url_action('review_A_plaintiff_s_motion_to_modify'), icon='edit', label=word("Make changes"))} 
+  ${action_button_html( url_action('review_A_plaintiff_s_motion_to_modify'), icon='edit', label=word("Make changes") )} 
 ---
 id: motion to modify attachment
 reconsider: True
 attachment:
     variable name: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
     name: Plaintiff\'s Motion to Modify or Terminate an Abuse Prevention Order - 209a
-    filename: Plaintiffs_Motion_to_Modify__209a
+    filename: Plaintiffs-Motion-to-Modify-209a
     pdf template file: 209A_plaintiff_s_motion_to_modify.pdf
     editable: False    
     fields: 
@@ -382,24 +413,23 @@ event: review_A_plaintiff_s_motion_to_modify
 question: |
   Your answers
 subquestion: |
-  Click edit to change a question
+  Tap 'Edit' to change an answer.
 review:
   - Edit: docket_number
     button: |
-      Docket Number:
-      ${ docket_number } 
+      **Docket number**: ${ docket_number } 
   - Edit: users[0].name.first
     button: |
-      Your name:
+      **Your name**:[BR]
       ${ users[0] }
   #- Edit: users[0].address.address
   #  button: |
-  #    Your address:[BR]
+  #    **Your address**:[BR]
   #    ${ users[0].address.block() }
   #- Edit: 
   #    - users[0].mobile_number
   #  button: |
-  #    Your contact information:[BR]
+  #    **Your contact information**:[BR]
   #    % if users[0].mobile_number: 
   #      Mobile number: ${ users[0].mobile_number }[BR]
   #    % endif
@@ -414,37 +444,38 @@ review:
   #    % endif
   - Edit: other_parties[0].name.first
     button: |
-      Defendant:
+      **The defendant's name**:[BR]
       ${ other_parties[0] }
-  - Edit: 
+  - Edit:
       - order_type
       - reason
     button: |
+      **You said you need to**:[BR]
       % if order_type == "modify":
-        You said you need to **change** your prevention order.
+        **Change** your Abuse Prevention Order:
         
-        What to change about your prevention order:[BR]
+        **What you need to change**:[BR]
         ${ what_to_modify }
       % else:
-        You said you need to **end** your prevention order.
+        **End** your Abuse Prevention Order.
       % endif
   - Edit: reason
     button: |
       % if order_type == "modify":
-        Why you need to **change** your prevention order:[BR]
+        **Your reason for **changing** your prevention order**:[BR]
       % else:
-        Why you need to **end** your prevention order:[BR]
+        **Your reason for **ending** your prevention order**:[BR]
       % endif
       ${ reason }
   - Edit: courts[0]
     button: |
-      Court:
+      **Court where you filed your original order**:[BR]
       ${ courts[0] }
   - Edit: signature_date
     button: |
-      Filing date:
+      **Date you will file this form with the court**:[BR]
       ${ signature_date }
   - Edit: users[0].signature
     button: |
-      Your signature:
+      **Your signature**:[BR]
       ${ users[0].signature }
