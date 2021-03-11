@@ -94,6 +94,11 @@ code: |
   # Custom code
   # Only a plaintiff can fill in this form so we'll hard-code it here
   docket_number
+  # Re-implement if this form goes to the court along with address impoundment
+  # users[0].address.address
+  # users[0].mobile_number
+  # form requires court division name
+  courts[0]
   user_ask_role = 'plaintiff'
   users[0].name.first
   users.there_is_another = False 
@@ -109,11 +114,6 @@ code: |
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
   
   # Standard code
-  # Re-implement if this form goes to the court along with address impoundment
-  # users[0].address.address
-  # users[0].mobile_number
-  # form requires court division name
-  courts[0]
   signature_date
   download_titles = [ "209a Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order" ]
 
@@ -208,23 +208,17 @@ fields:
 ---
 code: |
   what_to_modify = ""
-  #This is to ensure that the length of what_to_modify can be used in another calcuation
----
-template: translate_word_modify
-content: |
-  change
----
-template: translate_word_terminate
-content: |
-  end
+  # This is to ensure that the length of what_to_modify can be used in another calcuation
 ---
 id: explanation of future orders
 question: |
   Please confirm that you understand this statement
 subquestion: |
-  I understand that, even if I ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
-  this order, 
-  I can fill out a new Abuse Prevention Order at any time if ${other_parties[0]} does any of these things:
+  % if order_type == "modify":
+  I understand that, even if I change this order, I can fill out a new Abuse Prevention Order at any time if ${other_parties[0].familiar()} does any of these things:
+  % else:
+  I understand that, even if I end this order, I can fill out a new Abuse Prevention Order at any time if ${other_parties[0].familiar()} does any of these things:
+  % endif
 
   - makes you AFRAID that ${ other_parties.familiar() } will seriously hurt you, physically
   - tries to physically hurt you
@@ -241,11 +235,13 @@ fields:
       minlength: |
         You cannot continue unless you confirm you understand.
 ---
-# TODO: Change to 'need' when other PRs are merged
 id: reason for request
 question: |
-  Why do you want to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
-  your restraining order?
+  % if order_type == "modify":
+  Why do you need to change this restraining order?
+  % else:
+  Why do you need to end this restraining order?
+  % endif
 fields:
   - note: You can only type up to ${1089 - len(what_to_modify)} characters.
   - no label: reason
@@ -256,7 +252,7 @@ fields:
 # to tell the user how many characters they had left
 # more effectively, we put 'what to modify' and 'reason'
 # on different pages. We asked both to make sure the user
-# included the 'what' part. If the user said they want to
+# included the 'what' part. If the user said they need to
 # terminate, though, and they tap to edit on the review screen
 # and change to 'modify', they need to add the 'what' part.
 # How do we properly prompt them to do that once we
