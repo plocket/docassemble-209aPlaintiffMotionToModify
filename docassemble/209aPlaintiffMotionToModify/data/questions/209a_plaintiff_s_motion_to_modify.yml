@@ -94,6 +94,11 @@ code: |
   # Custom code
   # Only a plaintiff can fill in this form so we'll hard-code it here
   docket_number
+  # Re-implement if this form goes to the court along with address impoundment
+  # users[0].address.address
+  # users[0].mobile_number
+  # form requires court division name
+  courts[0]
   user_ask_role = 'plaintiff'
   users[0].name.first
   users.there_is_another = False 
@@ -109,11 +114,6 @@ code: |
   a_plaintiff_s_motion_to_modify_qc_v20009 = True
   
   # Standard code
-  # Re-implement if this form goes to the court along with address impoundment
-  # users[0].address.address
-  # users[0].mobile_number
-  # form requires court division name
-  courts[0]
   signature_date
   download_titles = [ "209a Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order" ]
 
