@@ -209,23 +209,17 @@ fields:
 ---
 code: |
   what_to_modify = ""
-  #This is to ensure that the length of what_to_modify can be used in another calcuation
----
-template: translate_word_modify
-content: |
-  change
----
-template: translate_word_terminate
-content: |
-  end
+  # This is to ensure that the length of what_to_modify can be used in another calcuation
 ---
 id: explanation of future orders
 question: |
   Please confirm that you understand this statement
 subquestion: |
-  I understand that, even if I ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
-  this order, 
-  I can fill out a new Abuse Prevention Order at any time if ${other_parties[0]}:
+  % if order_type == "modify":
+  I understand that, even if I change this order, I can fill out a new Abuse Prevention Order at any time if ${other_parties[0]}:
+  % else:
+  I understand that, even if I end this order, I can fill out a new Abuse Prevention Order at any time if ${other_parties[0]}:
+  % endif
 
   - harms or attempts to harm me physically; or 
   - places me in fear of imminent serious physical harm; or
@@ -243,8 +237,11 @@ fields:
 ---
 id: reason for request
 question: |
-  Why do you want to ${ translate_word_modify if order_type == "modify" else translate_word_terminate }
-  your restraining order?
+  % if order_type == "modify":
+  Why do you want to change this restraining order?
+  % else:
+  Why do you want to end this restraining order?
+  % endif
 fields:
   - no label: reason
     input type: area
