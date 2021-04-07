@@ -83,6 +83,7 @@ code: |
 id: interview_order_a_plaintiff_s_motion_to_modify_qc_v20009
 mandatory: True
 code: |
+  interview_short_title = "Ask the court to change or end your 209A restraining order"
   # This is a placeholder to control logic flow in this interview
   # It was generated from interview_generator.py as an 'interview order' type question.
   basic_questions_intro_screen 
@@ -129,9 +130,13 @@ code: |
 ---
 id: docket number
 question: |
-  What is the docket number for your case?
+  What is the docket number?
 subquestion: |
-  Look at your Abuse Prevention Order. Write the docket number you see there.
+  Look at your Abuse Prevention Order. 
+  
+  In the middle of the top row, see the docket number the court has given your case. 
+  
+  What is it?
 fields:
   - no label: docket_number
 ---
@@ -161,19 +166,26 @@ code: |
 id: motion to modify intro
 continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_intro
 question: |
-  Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order
+  Ask the court to change or end your 209A restraining order
 subquestion: |
-  This tool can help someone who made a 209A Abuse Prevention Order and now needs to ask the court to change it or end it (pursuant to G.L. c. 209A).
+  If the court issued a 209A restraining order to protect you, and
+  
+  you need to change the order or end it, 
+  
+  you can file the [Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order](https://www.mass.gov/doc/plaintiffs-motion-to-modify-or-terminate-abuse-prevention-order-gl-c-209a/download).  
 
-  You should only use this if:
+  Only use this motion if:
   
-  1. you already have a 209A Abuse Prevention Order **and**
-  1. you are the one that asked for that order **and**
-  1. you need to change or end your existing order
+  1. You already have a 209A Abuse Prevention Order,
+  1. You are the person who asked the court for the order and
+  1. you need to:
+      * change the order, **or** 
+      * end it.
   
-  If you are the defendant in this case and need to ask the court to change or end the Abuse Prevention Order, **TODO: INSTRUCTIONS TO GO HERE**.
+  You need a copy of your restraining order to answer the next set of questions. 
   
-  You will need to know the docket number of your original order and the court that gave you the original order.
+  Note:
+  If you are the defendant in this case and you need to ask the court to change or end the order, **TODO: INSTRUCTIONS TO GO HERE**.
 fields:
   - no label: is_plaintiff
     datatype: checkboxes
@@ -193,13 +205,13 @@ fields:
   - no label: order_type
     datatype: radio
     choices:
-      - End this Abuse Prevention Order: terminate 
-      - Change this Abuse Prevention Order: modify
+      - End this Abuse Prevention Order.: terminate 
+      - Change this Abuse Prevention Order.: modify
   - note: You can only type up to 540 characters.
     show if:
       variable: order_type
       is: modify
-  - What do you need to change about this order?: what_to_modify
+  - What do you need to change in this order?: what_to_modify
     input type: area
     maxlength: 540
     show if:
@@ -220,17 +232,17 @@ subquestion: |
   I understand that, even if I end this order, I can fill out a new Abuse Prevention Order at any time if ${other_parties[0].familiar()} does any of these things:
   % endif
 
-  - makes you AFRAID that ${ other_parties.familiar() } will seriously hurt you, physically
-  - tries to physically hurt you
-  - physically hurts you
-  - threatens, pressures, or forces you to have sex
+  - makes me **afraid** that ${ other_parties.familiar() } will seriously hurt me - physically,
+  - tries to hurt me - physically, 
+  - hurts me - physically,
+  - threatens, pressures, or forces me to have sex.
 fields:
   - no label: understand_yes
     datatype: checkboxes
     none of the above: False    
     minlength: 1
     choices:
-      - I understand I can still ask for a new order in the future: Yes
+      - I understand I can ask for a new order in the future.: Yes
     validation messages:
       minlength: |
         You cannot continue unless you confirm you understand.
@@ -238,7 +250,7 @@ fields:
 id: reason for request
 question: |
   % if order_type == "modify":
-  Why do you need to change this restraining order?
+  Why do you need this change?
   % else:
   Why do you need to end this restraining order?
   % endif
@@ -283,8 +295,11 @@ id: choose a court from list
 question: |
   What court is your case in?
 subquestion: |
-  Look at your Abuse Prevention Order. Pick the court name
-  you see there.
+  Look at your Abuse Prevention Order. 
+  
+  Underneath **your** name, see the court name. 
+  
+  Select that court from the list below:
 fields:
   - no label: courts[0]
     datatype: object
@@ -326,7 +341,11 @@ continue button field: a_plaintiff_s_motion_to_modify_qc_v20009_preview_question
 question: |
   Nearly finished
 subquestion: |
-  You are almost done! Before you continue to sign the form, check the form below. Tap on it. It will open in a new window so you can check it and make sure it is correct.
+  You are almost done! Before you sign, check the form below. 
+  
+  Tap on it. 
+  
+  It will open in a new screen so you can check it and make sure it is correct.
   
   Remember to come back to this page to go on to sign the form.
   
@@ -366,7 +385,7 @@ decoration: file-download
 question: |
   Review and download
 subquestion: |
-  Thank you ${users[0]}. Your form is ready to give to the court. 
+  ${users[0].familiar()}, now your form is ready to give to the court. 
 
   1. Tap the preview image below to open the form in a new window.
   1. Download, save, email, or print a copy of this form for your 
