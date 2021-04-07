@@ -437,26 +437,26 @@ review:
     button: |
       **Your name**:[BR]
       ${ users[0] }
-  #- Edit: users[0].address.address
-  #  button: |
-  #    **Your address**:[BR]
-  #    ${ users[0].address.block() }
-  #- Edit: 
-  #    - users[0].mobile_number
-  #  button: |
-  #    **Your contact information**:[BR]
-  #    % if users[0].mobile_number: 
-  #      Mobile number: ${ users[0].mobile_number }[BR]
-  #    % endif
-  #    % if users[0].phone_number:
-  #      Other phone number: ${users[0].phone_number}[BR]
-  #    % endif
-  #    % if users[0].email: 
-  #      Email: ${users[0].email}[BR]
-  #    % endif
-  #    % if users[0].other_contact_method: 
-  #      Other contact method: ${users[0].other_contact_method}[BR]
-  #    % endif
+  - Edit: users[0].address.address
+    button: |
+      **Your address**:[BR]
+      ${ users[0].address.block() }
+  - Edit: 
+      - users[0].mobile_number
+    button: |
+      **Your contact information**:[BR]
+      % if users[0].mobile_number: 
+        Mobile number: ${ users[0].mobile_number }[BR]
+      % endif
+      % if users[0].phone_number:
+        Other phone number: ${users[0].phone_number}[BR]
+      % endif
+      % if users[0].email: 
+        Email: ${users[0].email}[BR]
+      % endif
+      % if users[0].other_contact_method: 
+        Other contact method: ${users[0].other_contact_method}[BR]
+      % endif
   - Edit: other_parties[0].name.first
     button: |
       **The defendant's name**:[BR]
