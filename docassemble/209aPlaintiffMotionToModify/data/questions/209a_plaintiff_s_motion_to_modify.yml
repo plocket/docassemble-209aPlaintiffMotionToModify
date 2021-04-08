@@ -80,17 +80,22 @@ code: |
       ],
   })
 ---
+code: |
+  interview_short_title = "Ask the court to change or end your 209A restraining order"
+  form_approved_for_email_filing = False
+  # Set the preferred/allowed courts for this interview
+  preferred_court = interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"]["preferred court"]
+  allowed_courts = interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"]["allowed courts"]
+  set_establishing_vars = True
+---
 id: interview_order_a_plaintiff_s_motion_to_modify_qc_v20009
 mandatory: True
 code: |
-  interview_short_title = "Ask the court to change or end your 209A restraining order"
+  set_establishing_vars
   # This is a placeholder to control logic flow in this interview
   # It was generated from interview_generator.py as an 'interview order' type question.
   basic_questions_intro_screen 
   a_plaintiff_s_motion_to_modify_qc_v20009_intro
-  # Set the preferred/allowed courts for this interview
-  preferred_court = interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"]["preferred court"]
-  allowed_courts = interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"]["allowed courts"]
 
   # Custom code
   # Only a plaintiff can fill in this form so we'll hard-code it here
