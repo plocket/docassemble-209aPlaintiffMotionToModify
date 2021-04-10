@@ -388,14 +388,21 @@ attachment code: a_plaintiff_s_motion_to_modify_qc_v20009_attachment
 section: Download
 decoration: file-download
 question: |
-  Review and download
+  Download
 subquestion: |
   ${users[0].familiar()}, now your form is ready to give to the court. 
 
+  % if defined( 'courts[0].phone' ) and courts[0].phone:
   1. Tap the preview image below to open the form in a new window.
   1. Download, save, email, or print a copy of this form for your 
   records.
-  1. Mail or take the form by hand to ${ courts[0] }.
+  1. Call ${ courts[0] } at **${ courts[0].phone }** and ask them how they want you to deliver the form to the court.
+  % else:
+  1. Tap the preview image below to open the form in a new window.
+  1. Download, save, email, or print a copy of this form for your 
+  records.
+  1. Look up the number of ${ courts[0] } and call them to ask them how they want you to deliver the form to the court.
+  % endif
 
   The Trial Court’s Emergency HelpLine is 833-91-COURT (833-912-6878). 
   
