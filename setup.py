@@ -53,7 +53,7 @@ setup(name='docassemble.209aPlaintiffMotionToModify',
       url='https://docassemble.org',
       packages=find_packages(),
       namespace_packages=['docassemble'],
-      install_requires=['docassemble.MACourts>=0.0.55.3', 'docassemble.MAVirtualCourt>=1.0.20'],
+      install_requires=['docassemble.ALMassachusetts', 'docassemble.AssemblyLine>=2.0.12', 'docassemble.MACourts>=0.0.55.3', 'docassemble.MassAccess>=0.0.3.1'],
       zip_safe=False,
       package_data=find_package_data(where='docassemble/209aPlaintiffMotionToModify/', package='docassemble.209aPlaintiffMotionToModify'),
      )
