@@ -10,9 +10,6 @@ metadata:
   description: |
     If the plaintiff already has a restraining order, they can ask the court to change or end it.
 ---
-features:
-  navigation: True
----
 id: metadata
 mandatory: True
 code: |
@@ -83,35 +80,43 @@ code: |
 ---
 code: |
   interview_short_title = "Ask the court to change or end your 209A restraining order"
+---
+code: |
   form_approved_for_email_filing = False
-  # Set the preferred/allowed courts for this interview
+---
+code: |
   preferred_court = interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"]["preferred court"]
   allowed_courts = interview_metadata["a_plaintiff_s_motion_to_modify_qc_v20009"]["allowed courts"]
-  set_establishing_vars = True
+---
+code: |
+  user_ask_role = 'plaintiff'  # Only a plaintiff can file this form
 ---
 objects:
   - users: ALPeopleList.using( target_number=1, ask_number=True )
   - other_parties: ALPeopleList.using( target_number=1, ask_number=True )
 ---
+features:
+  navigation: True
+---
+sections:
+  - review_A_plaintiff_s_motion_to_modify: Change your answers
+---
+# Controls logic flow in this interview
 id: interview_order_a_plaintiff_s_motion_to_modify_qc_v20009
 mandatory: True
 code: |
-  set_establishing_vars
-  # This is a placeholder to control logic flow in this interview
-  # It was generated from interview_generator.py as an 'interview order' type question.
+  nav.hide()
   al_intro_screen
   a_plaintiff_s_motion_to_modify_qc_v20009_intro
-
-  # Custom code
-  # Only a plaintiff can fill in this form so we'll hard-code it here
+  
+  nav.set_section( 'review_A_plaintiff_s_motion_to_modify' )
   docket_number
+  nav.unhide()  # Now there will be editable answers
+  users.gather()
   # Re-implement if this form goes to the court along with address impoundment
   # users[0].address.address
   # users[0].mobile_number
-  # form requires court division name
-  user_ask_role = 'plaintiff'
-  users.gather()
-  trial_court
+  trial_court  # form requires court division name
   other_parties.gather()
   order_type
   if order_type == "modify": 
@@ -173,6 +178,8 @@ question: |
 subquestion: |
   If the court issued a 209A restraining order to protect you, and
   
+    something else
+  
   you need to change the order or end it, 
   
   you can file the [Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order](https://www.mass.gov/doc/plaintiffs-motion-to-modify-or-terminate-abuse-prevention-order-gl-c-209a/download).  
@@ -201,7 +208,7 @@ fields:
         You cannot continue unless you are the plaintiff.
 ---
 id: type of request
-section: Type of request
+#section: Type of request
 question: |
   What are you asking the court to do?
 fields:
