@@ -113,9 +113,12 @@ code: |
   docket_number
   nav.unhide()  # Now there will be editable answers
   users.gather()
-  # Re-implement if this form goes to the court along with address impoundment
-  # users[0].address.address
-  # users[0].mobile_number
+  if form_approved_for_email_filing:
+    # Ask for the address in a sensical place instead
+    # of letting the cover sheet trigger it later.
+    # TODO: Deal with address impoundment.
+    users[0].address.address
+    users[0].mobile_number
   trial_court  # form requires court division name
   other_parties.gather()
   order_type
@@ -208,7 +211,6 @@ fields:
         You cannot continue unless you are the plaintiff.
 ---
 id: type of request
-#section: Type of request
 question: |
   What are you asking the court to do?
 fields:
@@ -339,7 +341,6 @@ progress: 95
 id: download form
 event: download_form
 progress: 100
-section: Download
 decoration: file-download
 question: |
   Download
@@ -352,7 +353,7 @@ subquestion: |
   records.
   1. Call ${ trial_court } at **${ trial_court.phone }** and ask them how they want you to deliver the form to the court.
   % else:
-  1. Tap the preview image below to open the form in a new window.
+  1. Tap the 'View' button below to open the form in a new window.
   1. Download, save, email, or print a copy of this form for your 
   records.
   1. Look up the number of ${ trial_court } and call them to ask them how they want you to deliver the form to the court.
@@ -364,7 +365,10 @@ subquestion: |
   8:30am - 4:30pm, [BR]  
   Monday - Friday.
   
-  ${action_button_html( url_action('review_A_plaintiff_s_motion_to_modify'), icon='edit', label=word("Make changes") )} 
+  ---
+  
+  ${action_button_html( url_action('review_A_plaintiff_s_motion_to_modify'), icon='edit', label=word("Make changes") )}
+  
   ${ al_user_bundle.download_list_html( key='final' ) }
   
   ${ al_user_bundle.send_button_html( key='final' ) }
