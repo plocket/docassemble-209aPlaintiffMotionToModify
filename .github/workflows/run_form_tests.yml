@@ -7,15 +7,12 @@ on:
       extra_languages:
         description: 'Optional. A list of comma separated language names visible on buttons or links that change the language of the interview. Overrides the EXTRA_LANGUAGES repo secret.'
         default: ''
-        # "default" will prevent anything other than the default language.'
       tags:
         description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
         default: ''
-    #   url:
-    #     description: 'Optional. Override the generated interview url'
 
 jobs:
-  
+
   puppeteer-tests:
     runs-on: ubuntu-latest
 
@@ -24,10 +21,10 @@ jobs:
         node-version: [12.x]
 
     env:
+      BASE_URL: https://apps-dev.suffolklitlab.org
       PLAYGROUND_EMAIL: ${{ secrets.PLAYGROUND_EMAIL }}
       PLAYGROUND_PASSWORD: ${{ secrets.PLAYGROUND_PASSWORD }}
       PLAYGROUND_ID: ${{ secrets.PLAYGROUND_ID }}
-      BASE_URL: https://apps-dev.suffolklitlab.org/
       BRANCH_PATH: ${{ github.ref }}
       EXTRA_LANGUAGES: ${{ secrets.EXTRA_LANGUAGES }}
 
