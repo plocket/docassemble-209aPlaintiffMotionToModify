@@ -14,14 +14,12 @@ Scenario: User requests changes using max chars
     | a_plaintiff_s_motion_to_modify_qc_v20009_intro | True | true |
     | a_plaintiff_s_motion_to_modify_qc_v20009_preview_question | True | true |
     | acknowledged_information_use | I accept the terms of use. | true |
-    | acknowledged_information_use | None | false |
     | al_intro_screen | True | true |
     | basic_questions_signature_flow | True | true |
     | docket_number | 123456789 |  |
     | form_approved_for_email_filing | False | false |
     | interview_short_title | Ask the court to change or end your 209A restraining order |  |
     | is_plaintiff | I am the plaintiff | true |
-    | is_plaintiff | None | false |
     | order_type | modify |  |
     | other_parties[0].name.first | Drew |  |
     | other_parties[0].name.last | Defo |  |
@@ -34,7 +32,6 @@ Scenario: User requests changes using max chars
     | speak_text | True | true |
     | started_on_phone | False | false |
     | understand_yes | Yes | true |
-    | understand_yes | None | false |
     | users[0].name.first | Uli |  |
     | users[0].name.last | Ulin |  |
     | users[0].signature | /sign |  |
