@@ -30,6 +30,7 @@ Scenario: User requests changes using max chars
     | signature_date | 04/19/2021 |  |
     | speak_text | True | true |
     | started_on_phone | False | false |
+    | trial_court | all_courts[0] | true |
     | understand_yes | Yes | true |
     | users[0].name.first | Uli |  |
     | users[0].name.last | Ulin |  |
