@@ -220,7 +220,7 @@ fields:
       - End this Abuse Prevention Order.: terminate 
       - Change this Abuse Prevention Order.: modify
   - note: |
-      You can type about ${ int(math.ceil(modify_max_words / 10.0)) * 10 } words at most.
+      You can type about ${ int(math.floor(modify_max_words / 10.0)) * 10 } words at most.
     show if:
       variable: order_type
       is: modify
@@ -279,7 +279,7 @@ question: |
   % endif
 fields:
   - note: |
-      You can type about ${ int(math.ceil( ((max_chars_total - len(what_to_modify))/avg_chars_per_word) / 10.0)) * 10 } words at most.
+      You can type about ${ int(math.floor( ((max_chars_total - len(what_to_modify))/avg_chars_per_word) / 10.0)) * 10 } words at most.
   - no label: reason
     input type: area
     maxlength: ${ max_chars_total - len(what_to_modify) }
@@ -307,7 +307,7 @@ subquestion: |
   
 fields:
   - note: |
-      You can type about ${ int(math.ceil( (max_chars_total/avg_chars_per_word) / 10.0)) * 10 } words at most.
+      You can type about ${ int(math.floor( (max_chars_total/avg_chars_per_word) / 10.0)) * 10 } words at most.
   - no label: full_affidavit
     input type: area
     maxlength: ${ max_chars_total }
