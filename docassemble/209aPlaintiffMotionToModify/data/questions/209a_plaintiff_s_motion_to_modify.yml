@@ -183,7 +183,7 @@ subquestion: |
   
   you need to change the order or end it, 
   
-  you can file the [Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order <i class="fas fa-external-link-alt"></i>](https://www.mass.gov/doc/plaintiffs-motion-to-modify-or-terminate-abuse-prevention-order-gl-c-209a/download).  
+  you can file the [Plaintiff's Motion to Modify or Terminate an Abuse Prevention Order](https://www.mass.gov/doc/plaintiffs-motion-to-modify-or-terminate-abuse-prevention-order-gl-c-209a/download).  
 
   Only use this motion if:
   
@@ -195,7 +195,7 @@ subquestion: |
   
   You need a copy of your restraining order to answer the next set of questions. 
   
-  Note: If you are the defendant in this case and you need to ask the court to change or end the order, it is important to talk to a lawyer. [Massachusetts Legal Resource Finder <i class="fas fa-external-link-alt"></i>](https://masslrf.org/en/triage/start/abuse_crime) is one place you can look for a lawyer.
+  Note: If you are the defendant in this case and you need to ask the court to change or end the order, it is important to talk to a lawyer. [Massachusetts Legal Resource Finder](https://masslrf.org/en/triage/start/abuse_crime) is one place you can look for a lawyer.
 fields:
   - no label: is_plaintiff
     datatype: checkboxes
