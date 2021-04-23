@@ -345,7 +345,7 @@ subquestion: |
   ${ users[0].familiar() }, now your form is ready to give to the court. 
 
   % if defined( 'trial_court.phone' ) and trial_court.phone:
-  1. Tap the preview image below to open the form in a new window.
+  1. Tap the 'View' button below to open the form in a new window.
   1. Download, save, email, or print a copy of this form for your 
   records.
   1. Call ${ trial_court } at **${ trial_court.phone }** and ask them how they want you to deliver the form to the court.
@@ -355,12 +355,6 @@ subquestion: |
   records.
   1. Look up the number of ${ trial_court } and call them to ask them how they want you to deliver the form to the court.
   % endif
-
-  The Trial Court’s Emergency HelpLine is 833-91-COURT (833-912-6878). 
-  
-  The Emergency HelpLine is open: [BR]
-  8:30am - 4:30pm, [BR]  
-  Monday - Friday.
   
   ---
   
