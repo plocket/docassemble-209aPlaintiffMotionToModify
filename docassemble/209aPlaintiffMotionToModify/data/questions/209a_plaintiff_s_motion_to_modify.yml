@@ -2,6 +2,9 @@ include:
   - docassemble.AssemblyLine:al_package.yml
   - docassemble.MassAccess:massaccess.yml
 ---
+imports:
+  - math
+---
 metadata:
   title: |
     209A Plaintiff's Motion to Change an Abuse Prevention Order
@@ -216,13 +219,14 @@ fields:
     choices:
       - End this Abuse Prevention Order.: terminate 
       - Change this Abuse Prevention Order.: modify
-  - note: You can only type up to 540 characters.
+  - note: |
+      You can type about ${ int(math.ceil(modify_max_words / 10.0)) * 10 } words at most.
     show if:
       variable: order_type
       is: modify
   - What do you need to change in this order?: what_to_modify
     input type: area
-    maxlength: 540
+    maxlength: ${ modify_max_chars }
     show if:
       variable: order_type
       is: modify
@@ -230,6 +234,16 @@ fields:
 code: |
   what_to_modify = ""
   # This is to ensure that the length of what_to_modify can be used in another calcuation
+---
+code: |
+  modify_max_chars = 540
+  modify_max_words = modify_max_chars/avg_chars_per_word
+---
+code: |
+  max_chars_total = 1089
+---
+code: |
+  avg_chars_per_word = 7
 ---
 id: explanation of future orders
 question: |
@@ -264,10 +278,11 @@ question: |
   Why do you need to end this restraining order?
   % endif
 fields:
-  - note: You can only type up to ${1089 - len(what_to_modify)} characters.
+  - note: |
+      You can type about ${ int(math.ceil( ((max_chars_total - len(what_to_modify))/avg_chars_per_word) / 10.0)) * 10 } words at most.
   - no label: reason
     input type: area
-    maxlength: ${1089 - len(what_to_modify)}
+    maxlength: ${ max_chars_total - len(what_to_modify) }
 ---
 # How do we implement this? Previously, in order
 # to tell the user how many characters they had left
@@ -291,10 +306,11 @@ subquestion: |
   Once you are satisfied you have told the truth, as far as you know, tap to continue.
   
 fields:
-  - note: You can only type up to 1089 characters.
+  - note: |
+      You can type about ${ int(math.ceil( (max_chars_total/avg_chars_per_word) / 10.0)) * 10 } words at most.
   - no label: full_affidavit
     input type: area
-    maxlength: 1089
+    maxlength: ${ max_chars_total }
     default: |
       ${ what_to_modify + ". " + reason }
 ---
