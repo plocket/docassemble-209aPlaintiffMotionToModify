@@ -18,7 +18,7 @@ Scenario: User requests changes using max chars
   | other_parties[0].name.first | Drew |  |
   | other_parties[0].name.last | Defo |  |
   | reason | Because. Green tea jalapeño sesame soba noodles Bulgarian carrot kale lime mango crisp almonds red pepper tempeh vegan pine nuts Italian linguine puttanesca soba noodles asian pear picnic ginger tofu dill.\n\nDessert figs lemon tahini dressing banh mi salad rolls salty green papaya salad macadamia nut cookies mint lime taco bites Thai super chili. Mocha chocolate potato green onions summer fruit salad cremini mushrooms elderberry red lentil curry cool refreshing cucumber splash spring balsamic vinaigrette summer double dark chocolate Thai basil. |  |
-  | signature_choice | this device |  |
+  | signature_choice | this_device |  |
   | trial_court | all_courts[0] |  |
   | understand_yes['Yes'] | True |  |
   | users[0].name.first | Uli |  |
