@@ -11,7 +11,45 @@ metadata:
   short title: |
     209A Plaintiff's Motion to Change
   description: |
-    If the plaintiff already has a restraining order, they can ask the court to change or end it.
+    If the plaintiff already has a domestic violence abuse prevention (restraining order), 
+    this interview can help ask the court to change or end it.
+
+    The change can be to add or remove restrictions. For example: you can use this interview
+    to ask the judge to add protection for your pets if you did not include this in your
+    original petition.
+
+    After you file the motion this interview makes, the court will schedule a hearing. It may
+    take 1-2 weeks for the hearing where you can explain why you need the order changed or ended
+    to the judge.
+  can_I_use_this_form: |
+    You can use this interview if you are the person who asked for the order and you no
+    longer want the original order that the judge granted or you need to change or add
+    the protections the judge originally granted.
+  before_you_start: |
+    Before you start, it may help to have a copy of the original order that the judge granted.
+  maturity: production
+  estimated_completion_minutes: 20
+  estimated_completion_delta: 10
+  languages:
+    - en
+  help_page_url: "https://www.masslegalhelp.org/domestic-abuse-crime-victims/209a-restraining-orders/how-change-or-end-209a-restraining-order"
+  help_page_title: "How to change or end a 209A restraining order"
+  LIST_topics: 
+    - FA-07-00-00-00
+  tags: 
+    - FA-07-00-00-00
+  jurisdiction: NAM-US-US+MA
+  original_form: "https://www.mass.gov/doc/plaintiffs-motion-to-modify-or-terminate-abuse-prevention-order-gl-c-209a/download"
+  original_form_published_on: 2012-01-01
+  review_date: 2024-04-27
+  form_titles:
+    - 209A Plaintiff's Motion to Modify or Terminate Abuse Prevention Order
+  form_numbers:
+    - FA-13 (1/2012)
+  fees:
+    - Filing fee: 0.00
+  update_notes: |    
+
 ---
 id: metadata
 mandatory: True
