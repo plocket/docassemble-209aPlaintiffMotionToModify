@@ -44,7 +44,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.209aPlaintiffMotionToModify',
-      version='0.1.0',
+      version='0.2.0',
       description=("A docassemble extension for MA plaintiff's motion to modify a 209A using the docassemblyline process."),
       long_description="# docassemble.209aPlaintiffMotionToModify\r\n\r\nA docassemble extension for MA plaintiff's motion to modify a restraining order using the docassemblyline process.\r\n",
       long_description_content_type='text/markdown',
