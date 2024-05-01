@@ -1,6 +1,6 @@
 name: Annual update interview issue
 on:
-  workflow_dispatch
+  workflow_dispatch:
   schedule:
     - cron: "33 3 1 7 *" # At 3:33am every August 1st
 
