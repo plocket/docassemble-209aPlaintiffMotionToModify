@@ -10,19 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      repository-projects: write
     steps:
       - name: Create update-interview issue
         run: |
           new_issue_url=$(gh issue create \
             --title "$TITLE" \
-            --project "$PROJECT" \
             --body "$BODY")
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           TITLE: Check this interview for updates
-          PROJECT: Interview Upkeep
           BODY: |
             - [ ] Check for errors by running through the interview several times. Use different inputs each time.
             - [ ] Check for new versions of the PDF or DOCX forms in the `data/templates` folder.
@@ -32,4 +29,4 @@ jobs:
             * Describe the updates necessary in a comment on this issue.
             * Un-assign yourself from this issue
             * Change the project selection for this issue to the Interview Upkeep project.
-              
+            
